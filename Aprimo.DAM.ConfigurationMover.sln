@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aprimo.DAM.ConfigurationMover", "DAM Config Mover\Aprimo.DAM.ConfigurationMover.csproj", "{E93363E5-7907-40E0-89D4-E5EE5E50798F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aprimo.SecurityExporter", "DAM Security Exporter\Aprimo.SecurityExporter.csproj", "{7918ABEF-2E43-4350-87E0-39CF47F6112F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aprimo.SecurityImporter", "DAM Security Importer\Aprimo.SecurityImporter.csproj", "{D6734263-9892-4C9A-BD0B-306CA6DEF2E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E93363E5-7907-40E0-89D4-E5EE5E50798F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E93363E5-7907-40E0-89D4-E5EE5E50798F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E93363E5-7907-40E0-89D4-E5EE5E50798F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E93363E5-7907-40E0-89D4-E5EE5E50798F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7918ABEF-2E43-4350-87E0-39CF47F6112F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7918ABEF-2E43-4350-87E0-39CF47F6112F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7918ABEF-2E43-4350-87E0-39CF47F6112F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7918ABEF-2E43-4350-87E0-39CF47F6112F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6734263-9892-4C9A-BD0B-306CA6DEF2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6734263-9892-4C9A-BD0B-306CA6DEF2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6734263-9892-4C9A-BD0B-306CA6DEF2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6734263-9892-4C9A-BD0B-306CA6DEF2E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C121D2B-6ED8-4DE3-8B91-4A833AF7112B}
+	EndGlobalSection
+EndGlobal
