@@ -22,11 +22,11 @@ namespace Aprimo.Samples.Forms.SecurityExporter.Helpers
             userGroups._embedded.group = new List<UserGroups.Group>();
             do
             {
-                var request = new RestRequest(string.Format(urlFormat, urlFormat, offset), Method.GET);
+                var request = new RestRequest(string.Format(urlFormat, urlFormat, offset), Method.Get);
                 request.AddHeader("X-Access-Token", accessToken);
                 request.AddHeader("Accept", "application/json");
 
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -64,7 +64,7 @@ namespace Aprimo.Samples.Forms.SecurityExporter.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -75,7 +75,7 @@ namespace Aprimo.Samples.Forms.SecurityExporter.Helpers
                 {
                     request.AddHeader("filter", classificationFilter);
                 }
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -116,13 +116,13 @@ namespace Aprimo.Samples.Forms.SecurityExporter.Helpers
             var end = worksheet.Dimension.End;
             var client = new RestClient(aprimoDamUrl);
 
-            var request = new RestRequest(string.Format("classification/{0}/{1}", classificationId, permissionType), Method.GET);
+            var request = new RestRequest(string.Format("classification/{0}/{1}", classificationId, permissionType), Method.Get);
             var accessToken = accessHelper.GetToken();
             request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
             request.AddHeader("Accept", "application/hal+json");
             request.AddHeader("API-VERSION", "1");
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
@@ -159,12 +159,12 @@ namespace Aprimo.Samples.Forms.SecurityExporter.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -194,13 +194,13 @@ namespace Aprimo.Samples.Forms.SecurityExporter.Helpers
             var end = worksheet.Dimension.End;
             var client = new RestClient(aprimoDamUrl);
 
-            var request = new RestRequest(string.Format("usergroup/{0}/permissions", userGroupId), Method.GET);
+            var request = new RestRequest(string.Format("usergroup/{0}/permissions", userGroupId), Method.Get);
             var accessToken = accessHelper.GetToken();
             request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
             request.AddHeader("Accept", "application/hal+json");
             request.AddHeader("API-VERSION", "1");
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();

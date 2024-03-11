@@ -44,12 +44,12 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             string accessToken = "";
             var client = new RestClient(tokenEndpoint);
 
-            var request = new RestRequest("oauth/create-native-token", Method.POST);
+            var request = new RestRequest("oauth/create-native-token", Method.Post);
             request.AddHeader("Authorization", string.Format("Basic " + clientToken));
             request.AddHeader("ContentType", "application/json");
             request.AddHeader("client-id", clientId);
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("OK"))
             {
                 var tokens = JsonHelper.Deserialize<Tokens>(response.Content);
@@ -66,14 +66,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             // Get the access and refresh tokens
             string accessToken = "";
             var client = new RestClient(tokenEndpoint);
-            var request = new RestRequest("api/token", Method.POST);
+            var request = new RestRequest("api/token", Method.Post);
             request.AddHeader("Authorization", string.Format("Basic " + clientToken));
             request.AddHeader("ContentType", "application/json");
             request.AddHeader("client-id", clientId);
             request.RequestFormat = DataFormat.Json;
             request.AddJsonBody(new { refreshToken = refreshToken });
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("OK"))
             {
                 accessToken = response.Content.Replace("\"", "");

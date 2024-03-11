@@ -19,11 +19,11 @@ namespace Helpers
             userGroups._embedded.group = new List<UserGroups.Group>();
             do
             {
-                var request = new RestRequest(string.Format(urlFormat, urlFormat, offset), Method.GET);
+                var request = new RestRequest(string.Format(urlFormat, urlFormat, offset), Method.Get);
                 request.AddHeader("X-Access-Token", accessToken);
                 request.AddHeader("Accept", "application/json");
 
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -58,13 +58,13 @@ namespace Helpers
         {
             // Perform request
             var client = new RestClient(RESTEndpoint);
-            var request = new RestRequest(string.Format("classification/?namepath={0}", encodedNamepath), Method.GET);
+            var request = new RestRequest(string.Format("classification/?namepath={0}", encodedNamepath), Method.Get);
             var accessToken = accessHelper.GetToken();
             request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
             request.AddHeader("Accept", "application/hal+json");
             request.AddHeader("API-VERSION", "1");
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
@@ -85,7 +85,7 @@ namespace Helpers
 
             // Perform request
             var client = new RestClient(RESTEndpoint);
-            var request = new RestRequest(string.Format("classification/{0}/{1}", classificationId, permissionType), Method.PUT);
+            var request = new RestRequest(string.Format("classification/{0}/{1}", classificationId, permissionType), Method.Put);
             request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
             request.AddHeader("API-VERSION", "1");
             request.AddHeader("Accept", "application/hal+json");
@@ -106,7 +106,7 @@ namespace Helpers
             }
 
             request.AddJsonBody(bodyRequest);
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
@@ -132,11 +132,11 @@ namespace Helpers
             domainRights._embedded.domainRight = new List<DomainRights.DomainRight>();
             do
             {
-                var request = new RestRequest(string.Format(url, offset), Method.GET);
+                var request = new RestRequest(string.Format(url, offset), Method.Get);
                 request.AddHeader("X-Access-Token", accessToken);
                 request.AddHeader("Accept", "application/json");
 
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -170,11 +170,11 @@ namespace Helpers
             var client = new RestClient(aprimoMoUrl);
             var accessToken = accessHelper.GetToken();
 
-            var request = new RestRequest("users/me", Method.GET);
+            var request = new RestRequest("users/me", Method.Get);
             request.AddHeader("X-Access-Token", accessToken);
             request.AddHeader("Accept", "application/json");
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
@@ -193,12 +193,12 @@ namespace Helpers
         {
             var client = new RestClient(aprimoMoUrl);
             var accessToken = accessHelper.GetToken();
-            var request = new RestRequest("groups", Method.POST);
+            var request = new RestRequest("groups", Method.Post);
             request.AddHeader("X-Access-Token", accessToken);
             request.AddHeader("Accept", "application/json");
             request.AddJsonBody(group);
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
@@ -217,12 +217,12 @@ namespace Helpers
         {
             var client = new RestClient(aprimoMoUrl);
             var accessToken = accessHelper.GetToken();
-            var request = new RestRequest(string.Format("groups/{0}", group.groupId), Method.PUT);
+            var request = new RestRequest(string.Format("groups/{0}", group.groupId), Method.Put);
             request.AddHeader("X-Access-Token", accessToken);
             request.AddHeader("Accept", "application/json");
             request.AddJsonBody(group);
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
@@ -243,14 +243,14 @@ namespace Helpers
 
             // Perform request
             var client = new RestClient(RESTEndpoint);
-            var request = new RestRequest(string.Format("usergroup/{0}/permissions", userGroupId), Method.PUT);
+            var request = new RestRequest(string.Format("usergroup/{0}/permissions", userGroupId), Method.Put);
             request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
             request.AddHeader("API-VERSION", "1");
             request.AddHeader("Accept", "application/hal+json");
             request.RequestFormat = DataFormat.Json;
 
             request.AddJsonBody(JsonHelper.Serialize(copyPermissions));
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
@@ -272,12 +272,12 @@ namespace Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();

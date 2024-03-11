@@ -28,12 +28,12 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             var client = new RestClient(aprimoDamUrl);
             foreach (var id in fieldGroups.Select(x => x.Id).ToList())
             {
-                var request = new RestRequest(string.Format("fieldgroup/{0}", id), Method.DELETE);
+                var request = new RestRequest(string.Format("fieldgroup/{0}", id), Method.Delete);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -57,12 +57,12 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             var client = new RestClient(aprimoDamUrl);
             foreach (var id in fieldDefinitions.Select(x => x.Id).ToList())
             {
-                var request = new RestRequest(string.Format("fielddefinition/{0}", id), Method.DELETE);
+                var request = new RestRequest(string.Format("fielddefinition/{0}", id), Method.Delete);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -90,12 +90,12 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 var listToDelete = classifications.Where(x => !x.HasChildren).ToList();
                 foreach (var cls in listToDelete)
                 {
-                    var request = new RestRequest(string.Format("classification/{0}", cls.Id), Method.DELETE);
+                    var request = new RestRequest(string.Format("classification/{0}", cls.Id), Method.Delete);
                     var accessToken = accessHelper.GetToken();
                     request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
                     request.AddHeader("Accept", "application/hal+json");
                     request.AddHeader("API-VERSION", "1");
-                    IRestResponse response = client.Execute(request);
+                    RestResponse response = client.Execute(request);
                     if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                     {
                         accessToken = accessHelper.GetRefreshedToken();

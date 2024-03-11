@@ -6,3 +6,6 @@
 /DAM Config Mover/obj
 /DAM Security Exporter/obj
 /DAM Security Importer/obj
+/DAM Config Mover/bin/Debug
+/DAM Security Exporter/bin/Debug
+/DAM Security Importer/bin/Debug

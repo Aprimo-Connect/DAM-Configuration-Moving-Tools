@@ -179,7 +179,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             string url = "fieldgroups";
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -189,7 +189,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     request.AddHeader("filter", filter);
                 }
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -230,7 +230,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -242,7 +242,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     request.AddHeader("filter", filter);
                 }
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -283,7 +283,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -303,7 +303,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     request.AddHeader("filter", filter);
                 }
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -344,14 +344,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
                 request.AddHeader("pageSize", "1000");
                 
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -391,14 +391,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
                 request.AddHeader("pageSize", "1000");
                 //request.AddHeader("filter", "name <> '*DAM*'");
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -438,7 +438,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -449,7 +449,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     request.AddHeader("filter", filter);
                 }
 
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -488,7 +488,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -499,7 +499,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     request.AddHeader("filter", filter);
                 }
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -542,13 +542,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 var settingValue = new SettingValueDTO();
                 settingValue.SettingName = settingDef.Label;
                 //get system level value first
-                var request = new RestRequest(string.Format("setting/{0}", settingDef.ID), Method.GET);
+                var request = new RestRequest(string.Format("setting/{0}", settingDef.ID), Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
                 
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -563,7 +563,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 //then, get the values for user groups
                 foreach(Item group in filterUserGroups)
                 {                    
-                    request = new RestRequest(string.Format("setting/{0}?scope=usergroup&scopeId={1}", settingDef.ID, group.ID), Method.GET);                    
+                    request = new RestRequest(string.Format("setting/{0}?scope=usergroup&scopeId={1}", settingDef.ID, group.ID), Method.Get);                    
                     request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
                     request.AddHeader("Accept", "application/hal+json");
                     request.AddHeader("API-VERSION", "1");
@@ -596,7 +596,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -607,7 +607,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     request.AddHeader("filter", filter);
                 }
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -642,7 +642,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -655,7 +655,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     request.AddHeader("filter", filter);
                 }
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -702,7 +702,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             do
             {
-                var request = new RestRequest(url, Method.GET);
+                var request = new RestRequest(url, Method.Get);
                 var accessToken = accessHelper.GetToken();
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
@@ -713,7 +713,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     request.AddHeader("filter", filter);
                 }
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -743,12 +743,12 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
         public string GetUsernameOfUser(AccessHelper accessHelper, string aprimoMoUrl, string userId)
         {
             var client = new RestClient(aprimoMoUrl);
-            var request = new RestRequest(string.Format("users/{0}", userId), Method.GET);
+            var request = new RestRequest(string.Format("users/{0}", userId), Method.Get);
             var accessToken = accessHelper.GetToken();
             request.AddHeader("X-Access-Token", accessToken);
             request.AddHeader("Accept", "application/json");
 
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();

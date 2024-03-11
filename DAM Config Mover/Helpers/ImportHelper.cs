@@ -194,13 +194,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             foreach (var fieldGroup in fieldGroupsToImport)
             {                
                 logger.LogInfo(string.Format("Importing field group: {0}", fieldGroup.Name));
-                RestRequest request = new RestRequest("fieldgroups", Method.POST);                
+                RestRequest request = new RestRequest("fieldgroups", Method.Post);                
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("API-VERSION", "1");
                 request.AddHeader("Accept", "application/hal+json");
                 request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(fieldGroup);
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -236,13 +236,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     logger.LogInfo(string.Format("Updating existing field definition: {0}", fieldDef.Name));
                     fieldDef.Id = utils.fieldDefinitions.Where(x => x.Name.Equals(fieldDef.Name)).FirstOrDefault().Id;
-                    request = new RestRequest(string.Format("fielddefinition/{0}", fieldDef.Id), Method.PUT);
+                    request = new RestRequest(string.Format("fielddefinition/{0}", fieldDef.Id), Method.Put);
                     isUpdate = true;
                 }
                 else
                 {
                     logger.LogInfo(string.Format("Importing field definition: {0}", fieldDef.Name));
-                    request = new RestRequest("fielddefinitions", Method.POST);
+                    request = new RestRequest("fielddefinitions", Method.Post);
                 }
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("API-VERSION", "1");
@@ -250,7 +250,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 request.RequestFormat = DataFormat.Json;                
                 request.AddJsonBody(GetFieldDefinitionForImport(fieldDef, isUpdate));
                 
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -271,13 +271,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
         {
             var accessToken = accessHelper.GetToken();
             var client = new RestClient(RESTEndpoint);
-            var request = new RestRequest("searchindex", Method.PUT);
+            var request = new RestRequest("searchindex", Method.Put);
             request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
             request.AddHeader("API-VERSION", "1");
             request.AddHeader("Accept", "application/hal+json");
             request.AddJsonBody(@"{ 'rebuildScheduled': true }");
             request.RequestFormat = DataFormat.Json;
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
@@ -319,14 +319,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     {
                         logger.LogInfo(string.Format("Updating existing classification: {0}", classification.NamePath));
                         var id = utils.classifications.Where(x => x.NamePath.Equals(classification.NamePath)).FirstOrDefault().Id;
-                        request = new RestRequest(string.Format("classification/{0}", id), Method.PUT);
+                        request = new RestRequest(string.Format("classification/{0}", id), Method.Put);
                         classification.IsUpdate = true;
                         ManageLinkedObjectsForClassifications(classification.RegisteredFieldGroups, classification.RegisteredFields, classification.Slaveclassifications, classification.NamePath);
                     }
                     else
                     {
                         logger.LogInfo(string.Format("Importing classification: {0}", classification.NamePath));
-                        request = new RestRequest("classifications", Method.POST);
+                        request = new RestRequest("classifications", Method.Post);
                     }
                     request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                     request.AddHeader("API-VERSION", "1");
@@ -335,7 +335,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     request.RequestFormat = DataFormat.Json;
                     request.AddJsonBody(JsonHelper.Serialize(classification));
 
-                    IRestResponse response = client.Execute(request);
+                    RestResponse response = client.Execute(request);
                     if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                     {
                         accessToken = accessHelper.GetRefreshedToken();
@@ -385,14 +385,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     {
                         logger.LogInfo(string.Format("Adding field values to existing classification: {0}", classification.NamePath));
                         var id = utils.classifications.Where(x => x.NamePath.Equals(classification.NamePath)).FirstOrDefault().Id;
-                        request = new RestRequest(string.Format("classification/{0}", id), Method.PUT);
+                        request = new RestRequest(string.Format("classification/{0}", id), Method.Put);
                         classification.IsUpdate = true;
                         ManageLinkedObjectsForClassifications(classification.RegisteredFieldGroups, classification.RegisteredFields, classification.Slaveclassifications, classification.NamePath);
                     }
                     else
                     {
                         logger.LogInfo(string.Format("Importing classification: {0}", classification.NamePath));
-                        request = new RestRequest("classifications", Method.POST);
+                        request = new RestRequest("classifications", Method.Post);
                     }
                     request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                     request.AddHeader("API-VERSION", "1");
@@ -400,7 +400,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     request.RequestFormat = DataFormat.Json;
                     request.AddJsonBody(JsonHelper.Serialize(classification));
 
-                    IRestResponse response = client.Execute(request);
+                    RestResponse response = client.Execute(request);
                     if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                     {
                         accessToken = accessHelper.GetRefreshedToken();
@@ -443,14 +443,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     {
                         logger.LogInfo(string.Format("Updating existing file type: {0}", fileType.Name));
                         fileTypeId = utils.fileTypes.Where(x => x.Name.Equals(fileType.Name)).FirstOrDefault().Id;
-                        request = new RestRequest(string.Format("filetype/{0}", fileTypeId), Method.PUT);
+                        request = new RestRequest(string.Format("filetype/{0}", fileTypeId), Method.Put);
                        ManageLinkedObjectsForFileTypes(fileType);
                         isUpdate = true;
                     }
                     else
                     {
                         logger.LogInfo(string.Format("Importing file type: {0}", fileType.Name));
-                        request = new RestRequest("filetypes ", Method.POST);
+                        request = new RestRequest("filetypes ", Method.Post);
                     }
                     request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                     request.AddHeader("API-VERSION", "1");
@@ -458,7 +458,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     request.RequestFormat = DataFormat.Json;
                     request.AddJsonBody(JsonHelper.Serialize(fileType));
 
-                    IRestResponse response = client.Execute(request);
+                    RestResponse response = client.Execute(request);
                     if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                     {
                         accessToken = accessHelper.GetRefreshedToken();
@@ -474,7 +474,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     //since the order of these is important; we now need to reimport
                     if (isUpdate)
                     {
-                        RestRequest request2 = new RestRequest(string.Format("filetype/{0}", fileTypeId), Method.PUT);                         
+                        RestRequest request2 = new RestRequest(string.Format("filetype/{0}", fileTypeId), Method.Put);                         
                         request2.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                         request2.AddHeader("API-VERSION", "1");
                         request2.AddHeader("Accept", "application/hal+json");
@@ -510,13 +510,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             foreach (var settingCategory in settingCategoriesToImport)
             {
                 logger.LogInfo(string.Format("Importing setting category: {0}", settingCategory.Name));
-                RestRequest request = new RestRequest("settingcategories", Method.POST);
+                RestRequest request = new RestRequest("settingcategories", Method.Post);
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("API-VERSION", "1");
                 request.AddHeader("Accept", "application/hal+json");
                 request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(JsonHelper.Serialize(settingCategory));
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -552,13 +552,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     logger.LogInfo(string.Format("Updating existing setting definition: {0}", settingDef.Name));
                     settingDef.Id = utils.settingDefinitions.Where(x => x.Name.Equals(settingDef.Name)).FirstOrDefault().Id;
-                    request = new RestRequest(string.Format("settingdefinition/{0}", settingDef.Id), Method.PUT);
+                    request = new RestRequest(string.Format("settingdefinition/{0}", settingDef.Id), Method.Put);
                     isUpdate = true;
                 }
                 else
                 {
                     logger.LogInfo(string.Format("Importing setting definition: {0}", settingDef.Name));
-                    request = new RestRequest("settingdefinitions", Method.POST);
+                    request = new RestRequest("settingdefinitions", Method.Post);
                 }
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("API-VERSION", "1");
@@ -566,7 +566,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(GetSettingDefinitionForImport(settingDef, isUpdate));            
 
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
                     accessToken = accessHelper.GetRefreshedToken();
@@ -598,7 +598,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     RestRequest request;                    
                     logger.LogInfo(string.Format("Updating value(s) for setting: {0}", setting.SettingName));
-                    request = new RestRequest(string.Format("setting/{0}", setting.SettingName), Method.PUT);                    
+                    request = new RestRequest(string.Format("setting/{0}", setting.SettingName), Method.Put);                    
                     
                     request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                     request.AddHeader("API-VERSION", "1");
@@ -608,7 +608,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     var settingRequest = new SettingValueImportDTO() { Name = setting.SettingName, Scope = "system", Value = setting.SystemLevelValue };
                     request.AddJsonBody(JsonHelper.Serialize(settingRequest));
 
-                    IRestResponse response = client.Execute(request);
+                    RestResponse response = client.Execute(request);
                     if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                     {
                         accessToken = accessHelper.GetRefreshedToken();
@@ -623,7 +623,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     //then update user group levels if existing
                     foreach(var userGroupId in setting.UserGroupLevelValues.Keys)
                     {
-                        RestRequest request2 = new RestRequest(string.Format("setting/{0}", setting.SettingName), Method.PUT);
+                        RestRequest request2 = new RestRequest(string.Format("setting/{0}", setting.SettingName), Method.Put);
                         request2.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                         request2.AddHeader("API-VERSION", "1");
                         request2.AddHeader("Accept", "application/hal+json");
@@ -666,13 +666,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     {
                         logger.LogInfo(string.Format("Updating existing rule: {0}", rule.Name));
                         var id = utils.rules.Where(x => x.Name.Equals(rule.Name)).FirstOrDefault().Id;
-                        request = new RestRequest(string.Format("rule/{0}", id), Method.PUT);
+                        request = new RestRequest(string.Format("rule/{0}", id), Method.Put);
                         //ManageLinkedObjectsForRules(rule.Conditions, rule.Actions, rule.Name);
                     }
                     else
                     {
                         logger.LogInfo(string.Format("Importing rule: {0}", rule.Name));
-                        request = new RestRequest("rules", Method.POST);
+                        request = new RestRequest("rules", Method.Post);
                     }
                     request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                     request.AddHeader("API-VERSION", "1");
@@ -680,7 +680,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     request.RequestFormat = DataFormat.Json;
                     request.AddJsonBody(JsonHelper.Serialize(rule));
 
-                    IRestResponse response = client.Execute(request);
+                    RestResponse response = client.Execute(request);
                     if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                     {
                         accessToken = accessHelper.GetRefreshedToken();
