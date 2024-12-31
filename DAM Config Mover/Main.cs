@@ -20,6 +20,7 @@ namespace Aprimo.DAM.ConfigurationMover
         private List<ClassificationDTO> allSourceClassifications;
         private List<LanguageDTO> allSourceLanguages;
         private List<WatermarkDTO> allSourceWatermarks;
+        private List<ContentTypeDTO> allSourceContentTypes;
 
         //import caches
         private List<FieldGroupDTO> allDestinationFieldGroups;
@@ -27,6 +28,7 @@ namespace Aprimo.DAM.ConfigurationMover
         private List<ClassificationDTO> allDestinationClassifications;
         private List<LanguageDTO> allDestinationLanguages;
         private List<WatermarkDTO> allDestinationWatermarks;
+        private List<ContentTypeDTO> allDestinationContentTypes;
         private string ClientId;
         private string UserToken;
         private string UserName;
@@ -85,7 +87,7 @@ namespace Aprimo.DAM.ConfigurationMover
                 string aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", Registration);
                 string aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", Registration);
                 AccessHelper accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);
-                
+
 
                 logger.LogInfo("Starting export...");
 
@@ -96,7 +98,7 @@ namespace Aprimo.DAM.ConfigurationMover
 
                 if (cbExportFieldGroups.Checked)
                 {
-                    logger.LogInfo("Loading all field groups in Aprimo DAM...");                    
+                    logger.LogInfo("Loading all field groups in Aprimo DAM...");
                     var fieldGroupsToExport = exportHelper.GetFieldGroups(accessHelper, aprimoDamUrl, tbFieldGroupsFilter.Text);
                     exportHelper.ExportFieldGroups(ref fieldGroupsToExport, DirPath, ref progressBar1);
                 }
@@ -159,13 +161,23 @@ namespace Aprimo.DAM.ConfigurationMover
                     var fileTypes = exportHelper.GetFileTypes(accessHelper, aprimoDamUrl, tbFileTyepsFilter.Text);
                     exportHelper.ExportFileTypes(fileTypes, DirPath, ref progressBar1);
                 }
-               if (cbExportRules.Checked)
+                if (cbExportRules.Checked)
                 {
-                    var rules = exportHelper.GetRules(accessHelper, aprimoDamUrl, aprimoMoUrl, tbRuleFilter.Text);                    
+                    var rules = exportHelper.GetRules(accessHelper, aprimoDamUrl, aprimoMoUrl, tbRuleFilter.Text);
                     FillCachesSource(accessHelper, aprimoDamUrl);
                     //add watermarks cache
                     exportHelper.utils.watermarks = exportHelper.GetWatermarks(accessHelper, aprimoDamUrl, "");
                     exportHelper.ExportRules(rules, DirPath, ref progressBar1, accessHelper, aprimoMoUrl);
+                }
+                if (cbExportContentTypes.Checked)
+                {
+                    var contentTypes = exportHelper.GetContentTypes(accessHelper, aprimoDamUrl, aprimoMoUrl);
+                    if (allSourceContentTypes == null)
+                    {
+                        allSourceContentTypes = contentTypes;
+                    }
+                    FillCachesSource(accessHelper, aprimoDamUrl);
+                    exportHelper.ExportContentTypes(contentTypes, DirPath, ref progressBar1, accessHelper, aprimoMoUrl);
                 }
 
 
@@ -266,7 +278,7 @@ namespace Aprimo.DAM.ConfigurationMover
                     if (allDestinationLanguages == null)
                     {
                         logger.LogInfo("Filling languages cache...");
-                        allDestinationLanguages = exportHelper.GetLanguages(accessHelper, aprimoDamUrl);                       
+                        allDestinationLanguages = exportHelper.GetLanguages(accessHelper, aprimoDamUrl);
                         importHelper.utils.languages = allDestinationLanguages;
                     }
                     logger.LogInfo("Importing setting categories...");
@@ -325,6 +337,16 @@ namespace Aprimo.DAM.ConfigurationMover
                     var rulesFromXML = importHelper.GetRulesFromXML(DirPath);
                     importHelper.ImportOrUpdateRules(accessHelper, aprimoDamUrl, rulesFromXML, ref progressBar1);
                 }
+                if (cbImportContentTypes.Checked)
+                {
+                    //Cache all destination content types
+                    logger.LogInfo("Loading all content types in Aprimo DAM...");
+                    importHelper.utils.contentTypes = exportHelper.GetContentTypes(accessHelper, aprimoDamUrl, aprimoMoUrl);
+                    FillCachesDesination(accessHelper, aprimoDamUrl);
+                    logger.LogInfo("Importing all content types...");
+                    var contentTypesFromXML = importHelper.GetContentTypesFromXML(DirPath);
+                    importHelper.ImportOrUpdateContentTypes(accessHelper, aprimoDamUrl, contentTypesFromXML, ref progressBar1);
+                }
 
                 logger.LogInfo("Import finished.");
             }
@@ -370,6 +392,13 @@ namespace Aprimo.DAM.ConfigurationMover
                 allSourceFieldDefinitions = exportHelper.GetFieldDefinitions(accessHelper, aprimoDamUrl, "");
             }
             exportHelper.utils.fieldDefinitions = allSourceFieldDefinitions;
+            //cache all content types
+            if (allSourceContentTypes == null)
+            {
+                logger.LogInfo("Filling content types cache...");
+                allSourceContentTypes = exportHelper.GetContentTypes(accessHelper, aprimoDamUrl, "");
+            }
+            exportHelper.utils.contentTypes = allSourceContentTypes;
         }
 
         private void FillCachesDesination(AccessHelper accessHelper, string aprimoDamUrl)
@@ -403,6 +432,13 @@ namespace Aprimo.DAM.ConfigurationMover
                 allDestinationFieldDefinitions = exportHelper.GetFieldDefinitions(accessHelper, aprimoDamUrl, "");
             }
             importHelper.utils.fieldDefinitions = allDestinationFieldDefinitions;
+            //cache all content types
+            if (allDestinationContentTypes == null)
+            {
+                logger.LogInfo("Filling content types cache...");
+                allDestinationContentTypes = exportHelper.GetContentTypes(accessHelper, aprimoDamUrl, "");
+            }
+            importHelper.utils.contentTypes = allDestinationContentTypes;
         }
         private void BtnSaveLog_Click(object sender, EventArgs e)
         {
@@ -519,7 +555,7 @@ namespace Aprimo.DAM.ConfigurationMover
 
             string aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", Registration);
             string aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", Registration);
-            AccessHelper accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);            
+            AccessHelper accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);
 
             SettingsSelector settingsSelector = new SettingsSelector(accessHelper, exportHelper, aprimoDamUrl);
             DialogResult dialogresult = settingsSelector.ShowDialog();
@@ -548,7 +584,7 @@ namespace Aprimo.DAM.ConfigurationMover
             };
             ConnectionsDetails connectionDetails = new ConnectionsDetails(connectionToSave);
             DialogResult dialogresult = connectionDetails.ShowDialog();
-            connectionDetails.Dispose();            
+            connectionDetails.Dispose();
         }
         private void BtnSaveConnectionDetailsExport_Click(object sender, EventArgs e)
         {

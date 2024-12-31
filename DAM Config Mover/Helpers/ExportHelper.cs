@@ -1,5 +1,4 @@
 ﻿using Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers;
-using Aprimo.DAM.ConfigurationMover.Models;
 using Aprimo.DAM.ConfigurationMover.Models.DTOs;
 using Newtonsoft.Json;
 using RestSharp;
@@ -14,7 +13,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
     public class ExportHelper
     {
         public Logger logger;
-        public Utils utils;        
+        public Utils utils;
 
         public ExportHelper(Logger logger)
         {
@@ -24,14 +23,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
         public void ExportFieldGroups(ref List<FieldGroupDTO> fieldGroups, string exportDirectory, ref ProgressBar progressBar)
         {
             var outputFileName = "";
-            
+
             if (!string.IsNullOrEmpty(exportDirectory))
             {
                 outputFileName = Path.Combine(exportDirectory, "01_fieldgroups.xml");
             }
 
             if (File.Exists(outputFileName))
-                File.Delete(outputFileName);           
+                File.Delete(outputFileName);
 
             logger.LogInfo(string.Format("There are {0} field groups to export", fieldGroups.Count));
 
@@ -51,7 +50,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             if (File.Exists(outputFileName))
                 File.Delete(outputFileName);
 
-                        
+
             logger.LogInfo(string.Format("There are {0} field definitions to export", fieldDefinitions.Count));
 
             utils.ExportFieldsToFile(fieldDefinitions, outputFileName, ref progressBar);
@@ -167,8 +166,27 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 ReplaceUserIds(rules, accessHelper, aprimoMoUrl);
             }
             utils.ExportRulesToFile(rules, outputFileName, ref progressBar);
-                       
+
             logger.LogInfo("Export of rules finished");
+        }
+
+        public void ExportContentTypes(List<ContentTypeDTO> contentTypes, string exportDirectory, ref ProgressBar progressBar, AccessHelper accessHelper, string aprimoMoUrl)
+        {
+
+            var outputFileName = "";
+            if (!string.IsNullOrEmpty(exportDirectory))
+            {
+                outputFileName = Path.Combine(exportDirectory, "09_contentTypes.xml");
+            }
+
+            if (File.Exists(outputFileName))
+                File.Delete(outputFileName);
+
+            logger.LogInfo(string.Format("There are {0} content types to export", contentTypes.Count));
+
+            utils.ExportContentTypesToFile(contentTypes, outputFileName, ref progressBar);
+
+            logger.LogInfo("Export of content types finished");
         }
 
         public List<FieldGroupDTO> GetFieldGroups(AccessHelper accessHelper, string aprimoDamUrl, string filter)
@@ -219,7 +237,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             }
             while (url.Length > 0);
             return fieldGroups;
-        }        
+        }
 
         public List<FieldDefinitionDTO> GetFieldDefinitions(AccessHelper accessHelper, string aprimoDamUrl, string filter)
         {
@@ -227,7 +245,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             var client = new RestClient(aprimoDamUrl);
             string url = "fielddefinitions";
-            
+
             do
             {
                 var request = new RestRequest(url, Method.Get);
@@ -296,7 +314,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 {
                     request.AddHeader("select-classification", "image");
                     request.AddHeader("select-classification", "fields");
-                    request.AddHeader("select-classification", "slaveclassifications");                    
+                    request.AddHeader("select-classification", "slaveclassifications");
                 }
 
                 if ((filter != null) && (filter.Length > 0))
@@ -318,7 +336,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     {
                         try
                         {
-                            ClassificationDTO classificationTemp = JsonHelper.Deserialize<ClassificationDTO>(classification.ToString());                            
+                            ClassificationDTO classificationTemp = JsonHelper.Deserialize<ClassificationDTO>(classification.ToString());
                             classifications.Add(classificationTemp);
                         }
                         catch (Exception ex)
@@ -350,7 +368,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
                 request.AddHeader("pageSize", "1000");
-                
+
                 RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
@@ -493,7 +511,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
-                request.AddHeader("pageSize", "500");               
+                request.AddHeader("pageSize", "500");
 
                 if ((filter != null) && (filter.Length > 0))
                 {
@@ -547,7 +565,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("Accept", "application/hal+json");
                 request.AddHeader("API-VERSION", "1");
-                
+
                 RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
@@ -557,13 +575,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 }
                 if (response.StatusCode.ToString().Equals("OK", StringComparison.OrdinalIgnoreCase))
                 {
-                    dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);                   
-                    settingValue.SystemLevelValue = jsonResponse.value.ToString();                    
+                    dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+                    settingValue.SystemLevelValue = jsonResponse.value.ToString();
                 }
                 //then, get the values for user groups
-                foreach(Item group in filterUserGroups)
-                {                    
-                    request = new RestRequest(string.Format("setting/{0}?scope=usergroup&scopeId={1}", settingDef.ID, group.ID), Method.Get);                    
+                foreach (Item group in filterUserGroups)
+                {
+                    request = new RestRequest(string.Format("setting/{0}?scope=usergroup&scopeId={1}", settingDef.ID, group.ID), Method.Get);
                     request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
                     request.AddHeader("Accept", "application/hal+json");
                     request.AddHeader("API-VERSION", "1");
@@ -584,7 +602,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
                 settingValues.Add(settingValue);
             }
-            
+
             return settingValues;
         }
 
@@ -673,7 +691,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                             RuleDTO ruleTemp = JsonHelper.Deserialize<RuleDTO>(rule.ToString());
                             ruleTemp.Conditions = new List<RuleDTO.RuleCondition>();
                             ruleTemp.Actions = new List<RuleDTO.RuleAction>();
-                            foreach(dynamic condition in rule._embedded.conditions.items)
+                            foreach (dynamic condition in rule._embedded.conditions.items)
                             {
                                 var conditionTemp = JsonHelper.Deserialize<RuleDTO.RuleCondition>(condition.ToString());
                                 ruleTemp.Conditions.Add(conditionTemp);
@@ -692,6 +710,50 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             }
             while (url.Length > 0);
             return rules;
+        }
+
+        public List<ContentTypeDTO> GetContentTypes(AccessHelper accessHelper, string aprimoDamUrl, string aprimoMoUrl)
+        {
+            var contentTypes = new List<ContentTypeDTO>();
+            var client = new RestClient(aprimoDamUrl);
+            string url = "contenttypes";
+
+            do
+            {
+                var request = new RestRequest(url, Method.Get);
+                var accessToken = accessHelper.GetToken();
+                request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
+                request.AddHeader("Accept", "application/hal+json");
+                request.AddHeader("API-VERSION", "1");
+                request.AddHeader("pageSize", "100");
+
+
+                RestResponse response = client.Execute(request);
+                if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
+                {
+                    accessToken = accessHelper.GetRefreshedToken();
+                    request.AddOrUpdateParameter("Authorization", string.Format("Bearer " + accessToken));
+                    response = client.Execute(request);
+                }
+                if (response.StatusCode.ToString().Equals("OK", StringComparison.OrdinalIgnoreCase))
+                {
+                    dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+
+                    foreach (dynamic contentType in jsonResponse.items)
+                    {
+                        try
+                        {
+                            ContentTypeDTO contentTypeTemp = JsonHelper.Deserialize<ContentTypeDTO>(contentType.ToString());
+
+                            contentTypes.Add(contentTypeTemp);
+                        }
+                        catch (Exception ex) { }
+                    }
+                    url = (jsonResponse._links.next == null) ? "" : jsonResponse._links.next.href;
+                }
+            }
+            while (url.Length > 0);
+            return contentTypes;
         }
 
         public List<WatermarkDTO> GetWatermarks(AccessHelper accessHelper, string aprimoDamUrl, string filter)
@@ -760,23 +822,23 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 try
                 {
                     dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
-                   
+
                 }
                 catch (Exception ex)
                 {
                 }
             }
-            
+
             return "";
         }
 
         private void ReplaceUserIds(List<RuleDTO> rules, AccessHelper accessHelper, string aprimoMoUrl)
         {
-            foreach(RuleDTO rule in rules)
+            foreach (RuleDTO rule in rules)
             {
-                foreach(RuleDTO.RuleCondition condition in rule.Conditions)
+                foreach (RuleDTO.RuleCondition condition in rule.Conditions)
                 {
-                    if(!string.IsNullOrEmpty(condition.UserId))
+                    if (!string.IsNullOrEmpty(condition.UserId))
                     {
                         condition.UserId = GetUsernameOfUser(accessHelper, aprimoMoUrl, condition.UserId);
                     }

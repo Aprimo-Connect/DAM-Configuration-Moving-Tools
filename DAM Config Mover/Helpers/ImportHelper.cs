@@ -182,6 +182,26 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             return utils.GetRules(document);
         }
 
+        /// <summary>
+        /// Imports the content type information from the given xml file. 
+        /// </summary>      
+        public List<ContentTypeImportDTO> GetContentTypesFromXML(string importDirectory)
+        {
+            var importFileName = "";
+
+            if (!string.IsNullOrEmpty(importDirectory))
+            {
+                importFileName = Path.Combine(importDirectory, "09_contentTypes.xml");
+            }
+            if (!File.Exists(importFileName))
+            {
+                throw new Exception(string.Format("File for importing content types {0} doesn't exist.", importFileName));
+            }
+            logger.LogInfo(string.Format("Getting all content types to import from {0}", importFileName));
+            var document = XDocument.Load(importFileName);
+            return utils.GetContentTypes(document);
+        }
+
         public void ImportOrUpdateFieldGroups(AccessHelper accessHelper, string RESTEndpoint, List<FieldGroupDTO> fieldGroupsToImport, ref ProgressBar progressBar)
         {
             progressBar.Maximum = fieldGroupsToImport.Count;
@@ -190,11 +210,11 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             // Perform request
             string result = String.Empty;
-            var client = new RestClient(RESTEndpoint);                        
+            var client = new RestClient(RESTEndpoint);
             foreach (var fieldGroup in fieldGroupsToImport)
-            {                
+            {
                 logger.LogInfo(string.Format("Importing field group: {0}", fieldGroup.Name));
-                RestRequest request = new RestRequest("fieldgroups", Method.Post);                
+                RestRequest request = new RestRequest("fieldgroups", Method.Post);
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("API-VERSION", "1");
                 request.AddHeader("Accept", "application/hal+json");
@@ -226,7 +246,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
 
             // Perform request
             string result = String.Empty;
-            var client = new RestClient(RESTEndpoint);            
+            var client = new RestClient(RESTEndpoint);
             foreach (var fieldDef in fieldDefinitionsToImport)
             {
                 RestRequest request;
@@ -247,9 +267,9 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                 request.AddHeader("API-VERSION", "1");
                 request.AddHeader("Accept", "application/hal+json");
-                request.RequestFormat = DataFormat.Json;                
+                request.RequestFormat = DataFormat.Json;
                 request.AddJsonBody(GetFieldDefinitionForImport(fieldDef, isUpdate));
-                
+
                 RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
                 {
@@ -308,7 +328,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             // Perform request
             string result = String.Empty;
             var client = new RestClient(RESTEndpoint);
-            
+
             foreach (var classification in classificationsToImport)
             {
                 try
@@ -348,12 +368,12 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                         logger.LogInfo(string.Format("ERROR: Classification {0} was not imported/updated, error message: {1}", classification.NamePath, jsonResponse.exceptionMessage.ToString()));
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     logger.LogInfo(string.Format("ERROR when importing/updating classification {0}, message: {1}", classification.NamePath, ex.Message));
                 }
                 progressBar.PerformStep();
-            }            
+            }
             progressBar.Value = progressBar.Maximum;
         }
 
@@ -369,7 +389,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             progressBar.Maximum = classificationsToImport.Count;
             progressBar.Step = 1;
             var accessToken = accessHelper.GetToken();
-            
+
             // Perform request
             string result = String.Empty;
             var client = new RestClient(RESTEndpoint);
@@ -413,7 +433,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                         logger.LogInfo(string.Format("ERROR: Classification {0} was not updated with field values, error message: {1}", classification.NamePath, jsonResponse.exceptionMessage.ToString()));
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     logger.LogInfo(string.Format("ERROR when editing fields and mappings for classification {0}, meesage: {1}", classification.NamePath, ex.Message));
                 }
@@ -437,14 +457,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     RestRequest request;
                     bool isUpdate = false;
                     string fileTypeId = "";
-                    FileTypeImportDTO fileType2 = new FileTypeImportDTO(fileType);                    
+                    FileTypeImportDTO fileType2 = new FileTypeImportDTO(fileType);
                     //if file type exists then just update, if it doesn't - create it
                     if (utils.fileTypes.Any(x => x.Name.Equals(fileType.Name)))
                     {
                         logger.LogInfo(string.Format("Updating existing file type: {0}", fileType.Name));
                         fileTypeId = utils.fileTypes.Where(x => x.Name.Equals(fileType.Name)).FirstOrDefault().Id;
                         request = new RestRequest(string.Format("filetype/{0}", fileTypeId), Method.Put);
-                       ManageLinkedObjectsForFileTypes(fileType);
+                        ManageLinkedObjectsForFileTypes(fileType);
                         isUpdate = true;
                     }
                     else
@@ -474,13 +494,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     //since the order of these is important; we now need to reimport
                     if (isUpdate)
                     {
-                        RestRequest request2 = new RestRequest(string.Format("filetype/{0}", fileTypeId), Method.Put);                         
+                        RestRequest request2 = new RestRequest(string.Format("filetype/{0}", fileTypeId), Method.Put);
                         request2.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                         request2.AddHeader("API-VERSION", "1");
                         request2.AddHeader("Accept", "application/hal+json");
                         request2.RequestFormat = DataFormat.Json;
                         AddOrderedEnginesAndCatalogingActions(fileType2.CatalogActions, fileType2.MediaEngines, fileType2.Name);
-                        request2.AddJsonBody(JsonHelper.Serialize(fileType2));                        
+                        request2.AddJsonBody(JsonHelper.Serialize(fileType2));
                         response = client.Execute(request2);
                         if (!response.StatusCode.ToString().Equals("Created") && !response.StatusCode.ToString().Equals("NoContent"))
                         {
@@ -489,7 +509,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     logger.LogInfo(string.Format("ERROR when importing/updating file type {0}, message: {1}", fileType.Name, ex.Message));
                 }
@@ -546,7 +566,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             foreach (var settingDef in settingDefintionsToImport)
             {
                 bool isUpdate = false;
-                RestRequest request;                
+                RestRequest request;
                 //if setting definition exists then just update, if it doesn't - create it
                 if (utils.settingDefinitions.Any(x => x.Name.Equals(settingDef.Name)))
                 {
@@ -564,7 +584,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 request.AddHeader("API-VERSION", "1");
                 request.AddHeader("Accept", "application/hal+json");
                 request.RequestFormat = DataFormat.Json;
-                request.AddJsonBody(GetSettingDefinitionForImport(settingDef, isUpdate));            
+                request.AddJsonBody(GetSettingDefinitionForImport(settingDef, isUpdate));
 
                 RestResponse response = client.Execute(request);
                 if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
@@ -596,10 +616,10 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             {
                 try
                 {
-                    RestRequest request;                    
+                    RestRequest request;
                     logger.LogInfo(string.Format("Updating value(s) for setting: {0}", setting.SettingName));
-                    request = new RestRequest(string.Format("setting/{0}", setting.SettingName), Method.Put);                    
-                    
+                    request = new RestRequest(string.Format("setting/{0}", setting.SettingName), Method.Put);
+
                     request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
                     request.AddHeader("API-VERSION", "1");
                     request.AddHeader("Accept", "application/hal+json");
@@ -621,7 +641,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                         logger.LogInfo(string.Format("ERROR: Setting value {0} on system level was not updated, error message: {1}", setting.SettingName, jsonResponse.exceptionMessage.ToString()));
                     }
                     //then update user group levels if existing
-                    foreach(var userGroupId in setting.UserGroupLevelValues.Keys)
+                    foreach (var userGroupId in setting.UserGroupLevelValues.Keys)
                     {
                         RestRequest request2 = new RestRequest(string.Format("setting/{0}", setting.SettingName), Method.Put);
                         request2.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
@@ -703,7 +723,62 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             progressBar.Value = progressBar.Maximum;
         }
 
+        public void ImportOrUpdateContentTypes(AccessHelper accessHelper, string RESTEndpoint, List<ContentTypeImportDTO> contentTypesToImport, ref ProgressBar progressBar)
+        {
+            progressBar.Maximum = contentTypesToImport.Count;
+            progressBar.Step = 1;
+            var accessToken = accessHelper.GetToken();
 
+            // Perform request
+            string result = String.Empty;
+            var client = new RestClient(RESTEndpoint);
+            foreach (var contentType in contentTypesToImport)
+            {
+                try
+                {
+                    RestRequest request;
+                    //if contnet type exists then just update, if it doesn't - create it
+                    if (utils.contentTypes.Any(x => x.Name.Equals(contentType.Name)))
+                    {
+                        logger.LogInfo(string.Format("Updating existing content type: {0}", contentType.Name));
+                        var id = utils.contentTypes.Where(x => x.Name.Equals(contentType.Name)).FirstOrDefault().Id;
+                        request = new RestRequest(string.Format("contenttype/{0}", id), Method.Put);
+                        ManageLinkedObjectsForContentTypes(contentType.RegisteredFields, contentType.InheritableFields, contentType.Name);
+                    }
+                    else
+                    {
+                        logger.LogInfo(string.Format("Importing content type: {0}", contentType.Name));
+                        request = new RestRequest("contenttypes", Method.Post);
+                    }
+                    request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
+                    request.AddHeader("API-VERSION", "1");
+                    request.AddHeader("Accept", "application/hal+json");
+                    request.RequestFormat = DataFormat.Json;
+                    request.AddJsonBody(JsonHelper.Serialize(contentType));
+
+                    RestResponse response = client.Execute(request);
+
+                    if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
+                    {
+                        accessToken = accessHelper.GetRefreshedToken();
+                        request.AddOrUpdateParameter("Authorization", string.Format("Bearer {0}", accessToken));
+                        response = client.Execute(request);
+                    }
+                    if (!response.StatusCode.ToString().Equals("Created") && !response.StatusCode.ToString().Equals("NoContent"))
+                    {
+                        dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+                        logger.LogInfo(string.Format("ERROR: Content type {0} was not imported/updated, error message: {1}", contentType.Name, jsonResponse.exceptionMessage.ToString()));
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    logger.LogInfo(string.Format("ERROR when importing/updating content type {0}, message: {1}", contentType.Name, ex.Message));
+                }
+                progressBar.PerformStep();
+            }
+            progressBar.Value = progressBar.Maximum;
+        }
 
         /// <summary>
         /// Gets correct field definition object to send in request to update field definition
@@ -711,44 +786,44 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
         /// </summary>
         /// <param name="fieldDef"></param>
         private string GetFieldDefinitionForImport(FieldDefinitionDTO fieldDef, bool isUpdate)
-        {                       
+        {
             switch (fieldDef.DataType.ToLowerInvariant())
             {
                 case "classificationlist":
                     var clsFieldDef = new ClassificationListFieldDefinitionDTO(fieldDef, isUpdate);
                     ManageLinkedObjectsForFields(clsFieldDef.FieldGroups, clsFieldDef.EnabledLanguages, isUpdate, fieldDef.Name);
-                    return JsonHelper.Serialize(clsFieldDef); 
+                    return JsonHelper.Serialize(clsFieldDef);
                 case "date":
                     var dateFieldDef = new DateFieldDefinitionDTO(fieldDef, isUpdate);
                     ManageLinkedObjectsForFields(dateFieldDef.FieldGroups, dateFieldDef.EnabledLanguages, isUpdate, fieldDef.Name);
-                    return JsonHelper.Serialize(dateFieldDef);                   
+                    return JsonHelper.Serialize(dateFieldDef);
                 case "time":
                     var timeFieldDef = new DateFieldDefinitionDTO(fieldDef, isUpdate);
                     ManageLinkedObjectsForFields(timeFieldDef.FieldGroups, timeFieldDef.EnabledLanguages, isUpdate, fieldDef.Name);
-                    return JsonHelper.Serialize(timeFieldDef);                    
+                    return JsonHelper.Serialize(timeFieldDef);
                 case "datetime":
                     var dateTimeFieldDef = new DateTimeFieldDefinitionDTO(fieldDef, isUpdate);
                     ManageLinkedObjectsForFields(dateTimeFieldDef.FieldGroups, dateTimeFieldDef.EnabledLanguages, isUpdate, fieldDef.Name);
                     return JsonHelper.Serialize(dateTimeFieldDef);
-                case "optionlist":                    
+                case "optionlist":
                     var optionListFieldDef = new OptionListFieldDefinitionDTO(fieldDef, isUpdate);
                     ManageLinkedObjectsForFields(optionListFieldDef.FieldGroups, optionListFieldDef.EnabledLanguages, isUpdate, fieldDef.Name);
                     if (isUpdate)
                     {
                         var previousOptions = utils.fieldDefinitions.Where(x => x.Name.Equals(fieldDef.Name)).FirstOrDefault().Options;
                         //for options that we're updating, id needs to be provided, otherwise for new options there should be no id
-                        foreach(var addOrUpdateOption in optionListFieldDef.Options.AddOrUpdateOptions)
+                        foreach (var addOrUpdateOption in optionListFieldDef.Options.AddOrUpdateOptions)
                         {
                             if (previousOptions.Any(po => po.Name.Equals(addOrUpdateOption.Name)))
                             {
                                 addOrUpdateOption.Id = previousOptions.Where(po => po.Name.Equals(addOrUpdateOption.Name)).FirstOrDefault().Id;
-                            }                            
+                            }
                         }
 
                         //we need to set up options to remove, if any
                         var previousOptionsToRemove = previousOptions.Where(o => !optionListFieldDef.Options.AddOrUpdateOptions.Any(op => o.Name.Equals(op.Name))).ToList<OptionDTO>();
                         var optionsToRemove = new List<OptionImportDTO>();
-                        foreach(var option in previousOptionsToRemove)
+                        foreach (var option in previousOptionsToRemove)
                         {
                             optionsToRemove.Add(new OptionImportDTO(option));
                         }
@@ -792,7 +867,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 case "html":
                     var textFieldDef = new TextFieldDefinitionDTO(fieldDef, isUpdate);
                     ManageLinkedObjectsForFields(textFieldDef.FieldGroups, textFieldDef.EnabledLanguages, isUpdate, fieldDef.Name);
-                    return JsonHelper.Serialize(textFieldDef);                
+                    return JsonHelper.Serialize(textFieldDef);
                 case "userlist":
                 case "usergrouplist":
                     var userFieldDef = new UserGroupListFieldDefinitionDTO(fieldDef, isUpdate);
@@ -802,7 +877,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     var genFieldDef = new GenericFieldDefinitionDTO(fieldDef, isUpdate);
                     ManageLinkedObjectsForFields(genFieldDef.FieldGroups, genFieldDef.EnabledLanguages, isUpdate, fieldDef.Name);
                     return JsonHelper.Serialize(genFieldDef);
-            }            
+            }
         }
 
         /// <summary>
@@ -825,14 +900,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                     return JsonHelper.Serialize(dateTimeSettingDef);
                 case "role":
                     var roleSettingDef = new GenericSettingDefinitionDTO(settingDef);
-                    if(!isUpdate)
+                    if (!isUpdate)
                     {
                         roleSettingDef.RoleRequiredForChange = ".RoleChangeSystemSettings";
                     }
                     return JsonHelper.Serialize(roleSettingDef);
                 case "xml":
                     var xmlSettingDef = new XmlSettingDefinitionDTO(settingDef);
-                    if(string.IsNullOrEmpty(xmlSettingDef.DefaultValue))
+                    if (string.IsNullOrEmpty(xmlSettingDef.DefaultValue))
                     {
                         xmlSettingDef.DefaultValue = "<empty/>";
                     }
@@ -895,7 +970,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             {
                 var previousSlaves = utils.GetClassificationIds(utils.classifications.Where(x => x.NamePath.Equals(classificationNamepath)).FirstOrDefault().Embedded.SlaveClassifications.SlaveItems.Select(x => x.NamePath).ToList());
                 slaveClassifications.Remove = previousSlaves.Where(x => !slaveClassifications.AddOrUpdate.Any(y => x.Equals(y))).ToList();
-                var addOrUpdate =  slaveClassifications.AddOrUpdate.Where(x => !previousSlaves.Any(y => x.Equals(y))).ToList();
+                var addOrUpdate = slaveClassifications.AddOrUpdate.Where(x => !previousSlaves.Any(y => x.Equals(y))).ToList();
                 slaveClassifications.AddOrUpdate = addOrUpdate;
             }
         }
@@ -926,7 +1001,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 fileType.CatalogActions.AddOrUpdate = new List<FileTypeDTO.FileTypeAction>();
             }
 
-            if(fileType.PreviewPlayers != null)
+            if (fileType.PreviewPlayers != null)
             {
                 var previousPreviewPlayers = utils.fileTypes.Where(x => x.Name.Equals(fileType.Name)).FirstOrDefault().PreviewPlayers.ToList();
                 fileType.PreviewPlayers.Remove = previousPreviewPlayers.Where(x => !fileType.PreviewPlayers.AddOrUpdate.Any(y => x.Equals(y))).ToList();
@@ -947,17 +1022,34 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             //we will remove all previous actions and conditions and build the rule anew
             if (ruleConditions != null)
             {
-                var previousConditions = utils.rules.Where(x => x.Name.Equals(ruleName)).FirstOrDefault().Conditions;               
+                var previousConditions = utils.rules.Where(x => x.Name.Equals(ruleName)).FirstOrDefault().Conditions;
                 ruleConditions.Remove = previousConditions.Select(x => x.Index.ToString()).ToList();
             }
 
             if (ruleActions != null)
             {
                 var previousAction = utils.rules.Where(x => x.Name.Equals(ruleName)).FirstOrDefault().Actions;
-                ruleActions.Remove = previousAction.Select(x => x.Index.ToString()).ToList();                
+                ruleActions.Remove = previousAction.Select(x => x.Index.ToString()).ToList();
             }
         }
 
+        private void ManageLinkedObjectsForContentTypes(ListItemsToAddRemove registeredFields, ListItemsToAddRemove inheritableFields, string contentTypeName)
+        {
+            if (registeredFields != null)
+            {
+                var previousFields = utils.contentTypes.Where(x => x.Name.Equals(contentTypeName)).FirstOrDefault().RegisteredFields.Select(x => x.FieldId).ToList();
+                registeredFields.Remove = previousFields.Where(x => !registeredFields.AddOrUpdate.Any(y => x.Equals(y))).ToList();
+                var addOrUpdate = registeredFields.AddOrUpdate.Where(x => !previousFields.Any(y => x.Equals(y))).ToList();
+                registeredFields.AddOrUpdate = addOrUpdate;
+            }
+            if (inheritableFields != null)
+            {
+                var previousFields = utils.contentTypes.Where(x => x.Name.Equals(contentTypeName)).FirstOrDefault().InheritableFields.Select(x => x.FieldId).ToList();
+                inheritableFields.Remove = previousFields.Where(x => !inheritableFields.AddOrUpdate.Any(y => x.Equals(y))).ToList();
+                var addOrUpdate = inheritableFields.AddOrUpdate.Where(x => !previousFields.Any(y => x.Equals(y))).ToList();
+                inheritableFields.AddOrUpdate = addOrUpdate;
+            }
+        }
         private void AddOrderedEnginesAndCatalogingActions(ListCatalogActionsToAddRemove catalogActions, ListItemsToAddRemove mediaEngines, string fileTypeName)
         {
             if (catalogActions != null)
@@ -965,7 +1057,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 var previousCatalogActions = utils.fileTypes.Where(x => x.Name.Equals(fileTypeName)).FirstOrDefault().CatalogActions;
                 catalogActions.Remove = new List<FileTypeDTO.FileTypeAction>();
             }
-            
+
             if (mediaEngines != null)
             {
                 var previousMediaEngines = utils.fileTypes.Where(x => x.Name.Equals(fileTypeName)).FirstOrDefault().MediaEngines.ToList();

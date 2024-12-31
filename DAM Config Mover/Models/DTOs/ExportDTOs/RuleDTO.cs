@@ -47,9 +47,9 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
 
         [System.Runtime.Serialization.DataMemberAttribute(Name = "version")]
         public int Version { get; set; }
-       
+
         public List<RuleCondition> Conditions { get; set; }
-        
+
         public List<RuleAction> Actions { get; set; }
 
         /// <summary>
@@ -104,6 +104,7 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
 
             [System.Runtime.Serialization.DataMemberAttribute(Name = "status")]
             public string Status { get; set; }
+
         }
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
         /// </summary>
         [System.Runtime.Serialization.DataContractAttribute]
         public partial class RuleAction
-        {       
+        {
             /// <summary>
             /// Action data type
             /// </summary>
@@ -141,6 +142,12 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
             /// </summary>
             [System.Runtime.Serialization.DataMemberAttribute(Name = "renditionPresets")]
             public List<string> RenditionPresets { get; set; }
+
+            /// <summary>
+            /// Presets for public URLs, for publishing rules
+            /// </summary>
+            [System.Runtime.Serialization.DataMemberAttribute(Name = "presets")]
+            public List<PublicURIPreset> Presets { get; set; }
 
             [System.Runtime.Serialization.DataMemberAttribute(Name = "classificationId")]
             public string ClassificationId { get; set; }
@@ -175,12 +182,21 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
             [System.Runtime.Serialization.DataMemberAttribute(Name = "status")]
             public string Status { get; set; }
 
+            [System.Runtime.Serialization.DataMemberAttribute(Name = "targetType")]
+            public string TargetType { get; set; }
+
+            [System.Runtime.Serialization.DataMemberAttribute(Name = "subscribersList")]
+            public string SubscribersList { get; set; }
+
             public RuleAction()
             {
-                RenditionPresets = new List<string>();
+                RenditionPresets = new List<string>(); //these are for renditions
+                Presets = new List<PublicURIPreset>(); //these are for public URLs
                 ClassificationIds = new List<string>();
             }
         }
+
+
 
         /// <summary>
         /// Constructs a new object and initializes it
@@ -188,8 +204,21 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
         public RuleDTO()
         {
             Actions = new List<RuleAction>();
-            Conditions = new List<RuleCondition>(); 
+            Conditions = new List<RuleCondition>();
         }
-        
+
+    }
+
+    /// <summary>
+    /// Generalized action export class
+    /// </summary>
+    [System.Runtime.Serialization.DataContractAttribute]
+    public class PublicURIPreset
+    {
+        [System.Runtime.Serialization.DataMemberAttribute(Name = "presetName")]
+        public string PresetName { get; set; }
+
+        [System.Runtime.Serialization.DataMemberAttribute(Name = "presetType")]
+        public string PresetType { get; set; }
     }
 }

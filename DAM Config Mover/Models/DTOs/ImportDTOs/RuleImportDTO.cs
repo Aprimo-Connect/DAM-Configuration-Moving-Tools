@@ -4,8 +4,8 @@ using static Aprimo.DAM.ConfigurationMover.Models.DTOs.ClassificationDTO;
 namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
 {
     [System.Runtime.Serialization.DataContractAttribute()]
-    public class RuleImportDTO 
-    {        
+    public class RuleImportDTO
+    {
 
         [System.Runtime.Serialization.DataMemberAttribute(Name = "name")]
         public string Name { get; set; }
@@ -105,7 +105,7 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
             public string MoviePreviewExtension { get; set; }
 
             [System.Runtime.Serialization.DataMemberAttribute(Name = "reference")]
-            public string Reference { get; set; }                      
+            public string Reference { get; set; }
 
             [System.Runtime.Serialization.DataMemberAttribute(Name = "expression")]
             public string Expression { get; set; }
@@ -122,7 +122,7 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
         /// </summary>
         [System.Runtime.Serialization.DataContractAttribute]
         public partial class RuleAction
-        {       
+        {
             /// <summary>
             /// Action data type
             /// </summary>
@@ -153,6 +153,9 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
             [System.Runtime.Serialization.DataMemberAttribute(Name = "renditionPresets")]
             public List<string> RenditionPresets { get; set; }
 
+            [System.Runtime.Serialization.DataMemberAttribute(Name = "presets")]
+            public List<PublicURIPreset> Presets { get; set; }
+
             [System.Runtime.Serialization.DataMemberAttribute(Name = "classificationId")]
             public string ClassificationId { get; set; }
 
@@ -169,7 +172,7 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
             public string IdentifierType { get; set; }
 
             [System.Runtime.Serialization.DataMemberAttribute(Name = "reference")]
-            public string Reference { get; set; }          
+            public string Reference { get; set; }
 
             [System.Runtime.Serialization.DataMemberAttribute(Name = "fieldDefinitionId")]
             public string FieldDefinitionId { get; set; }
@@ -186,9 +189,16 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
             [System.Runtime.Serialization.DataMemberAttribute(Name = "status")]
             public string Status { get; set; }
 
+            [System.Runtime.Serialization.DataMemberAttribute(Name = "targetType")]
+            public string TargetType { get; set; }
+
+            [System.Runtime.Serialization.DataMemberAttribute(Name = "subscribersList")]
+            public string SubscribersList { get; set; }
+
             public RuleAction()
             {
-                RenditionPresets = new List<string>();
+                RenditionPresets = new List<string>(); //these are for resize rendition creation rules
+                Presets = new List<PublicURIPreset>(); //these are for public URLs
                 ClassificationIds = new List<string>();
             }
         }
@@ -199,8 +209,8 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
         public RuleImportDTO()
         {
             Actions = new ListActionsToAddRemove() { AddOrUpdate = new List<RuleDTO.RuleAction>(), Remove = new List<string>() };
-            Conditions = new ListConditionsToAddRemove() { AddOrUpdate = new List<RuleDTO.RuleCondition>(), Remove = new List<string>() }; 
+            Conditions = new ListConditionsToAddRemove() { AddOrUpdate = new List<RuleDTO.RuleCondition>(), Remove = new List<string>() };
         }
-        
+
     }
 }

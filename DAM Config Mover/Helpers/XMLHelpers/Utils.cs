@@ -15,7 +15,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
     public class Utils
     {
         public Logger logger;
-        public List<FieldGroupDTO> fieldGroups { get; set; } 
+        public List<FieldGroupDTO> fieldGroups { get; set; }
         public List<ClassificationDTO> classifications { get; set; }
 
         public List<FieldDefinitionDTO> fieldDefinitions { get; set; }
@@ -34,7 +34,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
 
         public List<SettingDefinitionDTO> settingDefinitions { get; set; }
 
-          
+        public List<ContentTypeDTO> contentTypes { get; set; }
         public Utils(Logger logger)
         {
             this.logger = logger;
@@ -88,7 +88,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 writer.WriteLine("</fieldGroups>");
                 writer.Flush();
             }
-            progressBar.Value = progressBar.Maximum;            
+            progressBar.Value = progressBar.Maximum;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                               select new FieldGroupDTO
                               {
                                   Name = Attributes.GetHtmlDecodedStringValue(c.Attribute("Name")),
-                                  Fields =  GetGroupFields(c.Elements("field"))
+                                  Fields = GetGroupFields(c.Elements("field"))
                               };
 
             if (fieldgroups.Any(c => String.IsNullOrEmpty(c.Name)))
@@ -184,7 +184,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         internal List<FieldDefinitionDTO> GetFieldDefinitions(XDocument document)
         {
             List<FieldDefinitionDTO> fields = new List<FieldDefinitionDTO>();
-            foreach(var f in document.Descendants("field"))
+            foreach (var f in document.Descendants("field"))
             {
                 fields.Add(new FieldDefinitionDTO
                 {
@@ -266,7 +266,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             {
                 throw new ApplicationException("A Field Scope element contains an empty value");
             }
-            
+
             return fields.ToList();
         }
 
@@ -277,7 +277,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         /// <returns></returns>
         private List<string> GetFieldGroups(XElement element)
         {
-            if(fieldGroups == null)
+            if (fieldGroups == null)
             {
                 throw new Exception("GetFieldGroups: Field groups are not cached");
             }
@@ -289,7 +289,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 if (!string.IsNullOrEmpty(val) && !groups.Contains(val))
                 {
                     if (fieldGroups.Any(x => x.Name.Equals(val)))
-                    {                        
+                    {
                         groups.Add(fieldGroups.Where(x => x.Name.Equals(val)).FirstOrDefault().Id);
                     }
                     else
@@ -315,9 +315,9 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             }
 
             List<string> fieldGroupNames = new List<string>();
-            foreach(var id in fieldGroupIds)
+            foreach (var id in fieldGroupIds)
             {
-                if(fieldGroups.Any(x => x.Id.Equals(id)))
+                if (fieldGroups.Any(x => x.Id.Equals(id)))
                 {
                     fieldGroupNames.Add(fieldGroups.Where(x => x.Id.Equals(id)).FirstOrDefault().Name);
                 }
@@ -370,7 +370,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             {
                 string val = Elements.GetStringValue(item);
                 if (!string.IsNullOrEmpty(val) && !resetFieldNames.Contains(val))
-                {                    
+                {
                     resetFieldNames.Add(val);
                 }
             }
@@ -392,7 +392,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 if (!string.IsNullOrEmpty(val) && !languageIds.Contains(val))
                 {
                     var id = GetLanguageId(val);
-                    if(!string.IsNullOrEmpty(id))
+                    if (!string.IsNullOrEmpty(id))
                         languageIds.Add(id);
                 }
             }
@@ -459,12 +459,12 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             List<string> classificationsToExport = new List<string>();
 
             foreach (string id in classificationIds)
-            {                                
+            {
                 if (classifications.Any(x => x.Id.Equals(id)))
                 {
                     classificationsToExport.Add(classifications.Where(x => x.Id.Equals(id)).FirstOrDefault().NamePath);
                 }
-                
+
             }
 
             return classificationsToExport;
@@ -508,10 +508,10 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 string val = Elements.GetStringValue(item);
                 if (!string.IsNullOrEmpty(val) && !classificationsToImport.Contains(val))
                 {
-                    if(classifications.Any(x => x.NamePath.Equals(val)))
+                    if (classifications.Any(x => x.NamePath.Equals(val)))
                     {
                         classificationsToImport.Add(classifications.Where(x => x.NamePath.Equals(val)).FirstOrDefault().Id);
-                    }          
+                    }
                     else
                     {
                         logger.LogInfo(string.Format("GetClassifications: WARNING - could not find classification id at destination for classification {0}", val));
@@ -537,7 +537,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 //{
                 //    if (classifications.Any(x => x.Equals(val)))
                 //    {
-                        contentTypesToImport.Add(val);
+                contentTypesToImport.Add(val);
                 //    }
                 //    else
                 //    {
@@ -638,13 +638,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             if (classifications == null)
             {
                 throw new Exception("GetRootClassification: Classifications are not cached");
-            }            
+            }
             if (!string.IsNullOrEmpty(clsId))
             {
                 if (classifications.Any(x => x.Id.Equals(clsId)))
                 {
                     return classifications.Where(x => x.Id.Equals(clsId)).FirstOrDefault().NamePath;
-                }                
+                }
             }
             return "";
         }
@@ -697,7 +697,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
 
             return options;
         }
-        
+
         private List<FieldDefinitionDTO> GetGroupFields(IEnumerable<XElement> elements)
         {
             var fields = new List<FieldDefinitionDTO>();
@@ -731,7 +731,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 foreach (FieldDefinitionDTO field in fields)
                 {
                     logger.LogInfo(string.Format("Processing field definition {0}", field.Name));
-                    WriteField(field, writer);                   
+                    WriteField(field, writer);
                     progressBar.PerformStep();
                 }
 
@@ -747,11 +747,11 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         /// <param name="currentField"></param>
         /// <param name="writer"></param>
         internal void WriteField(FieldDefinitionDTO currentField, TextWriter writer)
-        {            
-            
+        {
+
             writer.WriteLine("  <field Name=\"{0}\" Action=\"{1}\">", HttpUtility.HtmlEncode(currentField.Name), currentField.Action);
             writer.WriteLine("    <label>{0}</label>", HttpUtility.HtmlEncode(currentField.Label));
-            
+
             writer.WriteLine("    <labels>");
             foreach (LabelDTO label in currentField.Labels)
             {
@@ -782,7 +782,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             {
                 writer.WriteLine("      <fieldGroup>{0}</fieldGroup>", fieldGroupName);
             }
-            writer.WriteLine("    </fieldGroups>");            
+            writer.WriteLine("    </fieldGroups>");
             writer.WriteLine("    <options>");
             foreach (OptionDTO option in currentField.Options)
             {
@@ -812,7 +812,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             }
 
             writer.WriteLine("    </options>");
-            
+
             writer.WriteLine("    <relationType>{0}</relationType>", currentField.RelationType);
             writer.WriteLine("    <maxLength>{0}</maxLength>", currentField.MaxLength);
 
@@ -935,17 +935,17 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 writer.WriteLine("    <summaryField>{0}</summaryField>", GetFieldDefinitions(new List<string>() { currentField.SummaryField }).FirstOrDefault());
             else
                 writer.WriteLine("    <summaryField></summaryField>");
-           writer.WriteLine("    <datePattern>{0}</datePattern>", HttpUtility.HtmlEncode(currentField.DatePattern));
+            writer.WriteLine("    <datePattern>{0}</datePattern>", HttpUtility.HtmlEncode(currentField.DatePattern));
             writer.WriteLine("    <yearMonthPattern>{0}</yearMonthPattern>", HttpUtility.HtmlEncode(currentField.YearMonthPattern));
             writer.WriteLine("    <dateTimePattern>{0}</dateTimePattern>", HttpUtility.HtmlEncode(currentField.DateTimePattern));
             writer.WriteLine("    <useUTC>{0}</useUTC>", currentField.UseUTC);
             writer.WriteLine("    <timePattern>{0}</timePattern>", HttpUtility.HtmlEncode(currentField.TimePattern));
-            writer.WriteLine("    <listSource>{0}</listSource>", HttpUtility.HtmlEncode(currentField.ListSource));            
+            writer.WriteLine("    <listSource>{0}</listSource>", HttpUtility.HtmlEncode(currentField.ListSource));
             writer.WriteLine("    <allowSearchingOnNestedPropertiesAndFields>{0}</allowSearchingOnNestedPropertiesAndFields>", currentField.AllowSearchingOnNestedPropertiesAndFields);
             writer.WriteLine("    <filter>{0}</filter>", HttpUtility.HtmlEncode(currentField.Filter));
             writer.WriteLine("    <defaultView>{0}</defaultView>", HttpUtility.HtmlEncode(currentField.DefaultView));
             writer.WriteLine("    <linkRedordsToSelectedClassification>{0}</linkRedordsToSelectedClassification>", currentField.LinkRedordsToSelectedClassification);
-            writer.WriteLine("    <rootClassification>{0}</rootClassification>", GetRootClassification(currentField.RootClassification));            
+            writer.WriteLine("    <rootClassification>{0}</rootClassification>", GetRootClassification(currentField.RootClassification));
             writer.WriteLine("    <multiLine>{0}</multiLine>", HttpUtility.HtmlEncode(currentField.MultiLine));
             writer.WriteLine("  </field>");
         }
@@ -1041,23 +1041,23 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         public List<SettingDefinitionDTO> GetSettingDefinitions(XDocument document)
         {
             var definitions = from d in document.Descendants("definition")
-                             select new SettingDefinitionDTO
-                             {
-                                 Name = Attributes.GetHtmlDecodedStringValue(d.Attribute("Name")),                                 
-                                 Labels = GetLabels(d.Element("labels")),
-                                 CategoryId = GetCategoryId(Elements.GetStringValue(d.Element("category"))),
-                                 DataType = Elements.GetStringValue(d.Element("dataType")),
-                                 RoleRequiredForChange = Elements.GetStringValue(d.Element("roleRequiredForChange")),
-                                 UserGroupSettingMode = Elements.GetStringValue(d.Element("userGroupSettingMode")),
-                                 HelpUrl = Elements.GetHtmlDecodedStringValue(d.Element("helpUrl")),
-                                 AllowSystemSetting = Elements.ConvertStringToBoolean(d.Element("allowSystemSetting")),
-                                 AllowUserSetting = Elements.ConvertStringToBoolean(d.Element("allowUserSetting")),
-                                 DefaultValue = Elements.GetHtmlDecodedStringValue(d.Element("defaultValue")),
-                                 Tag = Elements.GetHtmlDecodedStringValue(d.Element("tag")),
-                                 Schema = Elements.GetHtmlDecodedStringValue(d.Element("schema")),
-                                 RegularExpression = Elements.GetHtmlDecodedStringValue(d.Element("regularExpression")),
-                                 Range = Elements.GetHtmlDecodedStringValue(d.Element("range"))
-                             };
+                              select new SettingDefinitionDTO
+                              {
+                                  Name = Attributes.GetHtmlDecodedStringValue(d.Attribute("Name")),
+                                  Labels = GetLabels(d.Element("labels")),
+                                  CategoryId = GetCategoryId(Elements.GetStringValue(d.Element("category"))),
+                                  DataType = Elements.GetStringValue(d.Element("dataType")),
+                                  RoleRequiredForChange = Elements.GetStringValue(d.Element("roleRequiredForChange")),
+                                  UserGroupSettingMode = Elements.GetStringValue(d.Element("userGroupSettingMode")),
+                                  HelpUrl = Elements.GetHtmlDecodedStringValue(d.Element("helpUrl")),
+                                  AllowSystemSetting = Elements.ConvertStringToBoolean(d.Element("allowSystemSetting")),
+                                  AllowUserSetting = Elements.ConvertStringToBoolean(d.Element("allowUserSetting")),
+                                  DefaultValue = Elements.GetHtmlDecodedStringValue(d.Element("defaultValue")),
+                                  Tag = Elements.GetHtmlDecodedStringValue(d.Element("tag")),
+                                  Schema = Elements.GetHtmlDecodedStringValue(d.Element("schema")),
+                                  RegularExpression = Elements.GetHtmlDecodedStringValue(d.Element("regularExpression")),
+                                  Range = Elements.GetHtmlDecodedStringValue(d.Element("range"))
+                              };
 
             if (definitions.Any(d => String.IsNullOrEmpty(d.Name)))
             {
@@ -1100,7 +1100,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         /// <param name="currentDefinition"></param>
         /// <param name="writer"></param>
         private void WriteSettingDefinition(SettingDefinitionDTO currentDefinition, TextWriter writer)
-        {            
+        {
             writer.WriteLine("  <definition Name=\"{0}\" >", HttpUtility.HtmlEncode(currentDefinition.Name));
             writer.WriteLine("    <labels>");
 
@@ -1111,7 +1111,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
 
             writer.WriteLine("    </labels>");
             writer.WriteLine("  <category>{0}</category>", GetCategoryName(currentDefinition.CategoryId));
-            writer.WriteLine("  <dataType>{0}</dataType>",currentDefinition.DataType);
+            writer.WriteLine("  <dataType>{0}</dataType>", currentDefinition.DataType);
             writer.WriteLine("  <roleRequiredForChange>{0}</roleRequiredForChange>", HttpUtility.HtmlEncode(currentDefinition.RoleRequiredForChange));
             writer.WriteLine("  <userGroupSettingMode>{0}</userGroupSettingMode>", currentDefinition.UserGroupSettingMode);
             writer.WriteLine("  <helpUrl>{0}</helpUrl>", HttpUtility.HtmlEncode(currentDefinition.HelpUrl));
@@ -1137,16 +1137,16 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             if (categories == null)
             {
                 throw new Exception("GetCategoryName: Setting Categories are not cached");
-            }            
-           
+            }
+
             if (!string.IsNullOrEmpty(categoryId))
             {
                 if (categories.Any(x => x.Id.Equals(categoryId)))
                 {
-                   return categories.Where(x => x.Id.Equals(categoryId)).FirstOrDefault().Name;
+                    return categories.Where(x => x.Id.Equals(categoryId)).FirstOrDefault().Name;
                 }
             }
-            
+
             return "";
         }
 
@@ -1188,13 +1188,13 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                              {
                                  SettingName = Attributes.GetHtmlDecodedStringValue(s.Attribute("Name")),
                                  SystemLevelValue = Elements.GetStringValue(s.Element("systemValue")),
-                                 UserGroupLevelValues = GetUserGroupSettingValues(s.Element("userGroupValues")),                                 
+                                 UserGroupLevelValues = GetUserGroupSettingValues(s.Element("userGroupValues")),
                              };
 
             if (categories.Any(s => String.IsNullOrEmpty(s.SettingName)))
             {
                 throw new ApplicationException("A setting Name element contains an empty value");
-            }            
+            }
 
             return categories.ToList();
         }
@@ -1210,7 +1210,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             {
                 throw new Exception("GetUserGroupSettingValues: User Groups are not cached");
             }
-            
+
             Dictionary<string, string> retval = new Dictionary<string, string>();
             foreach (var userGroupValue in xElement.Descendants("userGroup"))
             {
@@ -1218,11 +1218,11 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 if (userGroups.Any(x => x.Name.Equals(userGroupName)))
                 {
                     retval.Add(userGroups.Where(x => x.Name.Equals(userGroupName)).FirstOrDefault().Id, Elements.GetStringValue(userGroupValue));
-                }               
+                }
             }
 
             return retval;
-        }        
+        }
 
         /// <summary>
         /// Writes the entries to the file
@@ -1239,7 +1239,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 writer.WriteLine("<settingValues>");
 
                 foreach (var setting in settings.OrderBy(s => s.SettingName))
-                {                    
+                {
                     logger.LogInfo(string.Format("Processing file type {0}", setting.SettingName));
                     WriteSettingValues(setting, writer);
                     progressBar.PerformStep();
@@ -1278,6 +1278,33 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             progressBar.Value = progressBar.Maximum;
         }
 
+        /// <summary>
+        /// Writes the entries to the file
+        /// </summary>
+        /// <param name="rule"></param>
+        /// <param name="fileName"></param>
+        public void ExportContentTypesToFile(List<ContentTypeDTO> rule, string fileName, ref ProgressBar progressBar)
+        {
+            progressBar.Maximum = rule.Count;
+            progressBar.Step = 1;
+            using (TextWriter writer = File.CreateText(fileName))
+            {
+                writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                writer.WriteLine("<contentTypes>");
+
+                foreach (var contentTypeItem in rule.OrderBy(r => r.Name))
+                {
+                    logger.LogInfo(string.Format("Processing content type {0}", contentTypeItem.Name));
+                    WriteContentType(contentTypeItem, writer);
+                    progressBar.PerformStep();
+                }
+
+                writer.WriteLine("</contentTypes>");
+                writer.Flush();
+            }
+            progressBar.Value = progressBar.Maximum;
+        }
+
 
         /// <summary>
         /// Writes the setting definition to the export file.
@@ -1285,9 +1312,9 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         /// <param name="currentSetting"></param>
         /// <param name="writer"></param>
         internal static void WriteSettingValues(SettingValueDTO currentSetting, TextWriter writer)
-        {            
-            writer.WriteLine("  <setting Name=\"{0}\" >", HttpUtility.HtmlEncode(currentSetting.SettingName));                       
-           
+        {
+            writer.WriteLine("  <setting Name=\"{0}\" >", HttpUtility.HtmlEncode(currentSetting.SettingName));
+
             writer.WriteLine("  <systemValue>{0}</systemValue>", HttpUtility.HtmlEncode(currentSetting.SystemLevelValue));
             writer.WriteLine("  <userGroupValues>");
             foreach (var item in currentSetting.UserGroupLevelValues)
@@ -1459,7 +1486,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         /// <returns></returns>
         internal List<ClassificationImportDTO> GetClassifications(XDocument document, bool provideFields)
         {
-            List<ClassificationImportDTO> classifications = new List<ClassificationImportDTO>();            
+            List<ClassificationImportDTO> classifications = new List<ClassificationImportDTO>();
             var classificationsList = provideFields ? document.Descendants("classification").Where(x => x.Element("fields").HasElements || x.Element("slaveClassifications").HasElements).ToList() : document.Descendants("classification");
             foreach (var c in classificationsList)
             {
@@ -1481,24 +1508,24 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                     Tag = Elements.GetHtmlDecodedStringValue(c.Element("tag"))
                 };
                 classifications.Add(cls);
-            }                
+            }
 
             if (classifications.Any(c => String.IsNullOrEmpty(c.Name)))
             {
                 throw new Exception("A Classification Name element contains an empty value");
-            }                      
+            }
 
             return classifications.ToList();
         }
 
 
         private string GetParentPath(XAttribute attributeForPath, XElement elementForName)
-        {            
+        {
             var fullPath = Attributes.GetHtmlDecodedStringValue(attributeForPath);
             var classificationName = Elements.GetHtmlDecodedStringValue(elementForName);
             var parentPath = fullPath.Replace(string.Format("/{0}", classificationName), "");
             return string.IsNullOrEmpty(parentPath) ? null : parentPath;
-            
+
         }
 
         private ListItemsToAddRemove GetListStringItemsToAddRemove(XElement element)
@@ -1517,6 +1544,12 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             retVal.AddOrUpdate = GetFieldDefinitionIds(Elements.GetStringListValue(element));
             retVal.Remove = new List<string>();
             return retVal;
+        }
+
+        private string GetFieldToRegister(XElement element)
+        {
+            if (element == null) return "";
+            return GetFieldDefinitionIds(new List<string>() { Elements.GetHtmlDecodedStringValue(element) }).FirstOrDefault();
         }
 
         private ListItemsToAddRemove GetFieldGroupsToRegister(XElement element)
@@ -1538,14 +1571,14 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
 
         private ClassificationFields GetFieldsForClassification(XElement element)
         {
-            
+
             var retVal = new ClassificationFields();
             if (element == null) return retVal;
             retVal.addOrUpdate = new List<FieldsAddOrUpdate>();
             foreach (var item in element.Elements())
             {
                 if (item == null) continue;
-               
+
                 var fieldName = item.Attribute("name").Value;
                 var dataType = item.Attribute("dataType").Value;
                 if (!string.IsNullOrEmpty(fieldName) && fieldDefinitions.Any(x => x.Name.Equals(fieldName)))
@@ -1559,7 +1592,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                         var languageName = value.Attribute("language").Value;
                         var localizedValue = new LocalizedValues();
                         if (!string.IsNullOrEmpty(languageName) && languages.Any(x => x.Name.Equals(languageName)))
-                        {                            
+                        {
                             localizedValue.Language = GetLanguageId(languageName);
                         }
                         if (string.IsNullOrEmpty(languageName))
@@ -1587,7 +1620,27 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                     retVal.addOrUpdate.Add(field);
                 }
             }
-            
+
+            return retVal;
+        }
+
+        private List<PublicURIPreset> GetPublicURIPresets(XElement element)
+        {
+            var retVal = new List<PublicURIPreset>();
+            if (element == null) return retVal;
+
+            foreach (XElement item in element.Descendants("preset"))
+            {
+                PublicURIPreset newPreset = new PublicURIPreset()
+                {
+                    PresetName = Attributes.GetHtmlDecodedStringValue(item.Attribute("presetName")),
+                    PresetType = Attributes.GetHtmlDecodedStringValue(item.Attribute("presetType"))
+                };
+
+                if (!string.IsNullOrEmpty(newPreset.PresetType))
+                    retVal.Add(newPreset);
+            }
+
             return retVal;
         }
 
@@ -1599,7 +1652,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         internal void ExportClassificationsToFile(List<ClassificationDTO> classifications, string fileName, ref ProgressBar progressBar)
         {
             progressBar.Maximum = classifications.Count;
-            progressBar.Step = 1;            
+            progressBar.Step = 1;
             using (TextWriter writer = File.CreateText(fileName))
             {
                 writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
@@ -1624,7 +1677,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         /// <param name="item"></param>
         /// <param name="writer"></param>
         private void WriteClassification(ClassificationDTO item, TextWriter writer)
-        {            
+        {
             writer.WriteLine("  <classification Path=\"{0}\" Action=\"{1}\">", HttpUtility.HtmlEncode(item.NamePath), item.Action);
             writer.WriteLine("    <name>{0}</name>", HttpUtility.HtmlEncode(item.Name));
             writer.WriteLine("    <namePath>{0}</namePath>", HttpUtility.HtmlEncode(item.NamePath));
@@ -1653,7 +1706,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             {
                 writer.WriteLine("      <registeredFieldGroup>{0}</registeredFieldGroup>", HttpUtility.HtmlEncode(fieldGroup));
             }
-            writer.WriteLine("    </registeredFieldGroups>");            
+            writer.WriteLine("    </registeredFieldGroups>");
 
             if (!string.IsNullOrEmpty(item.Tag))
                 writer.WriteLine("    <tag>{0}</tag>", HttpUtility.HtmlEncode(item.Tag));
@@ -1680,18 +1733,18 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 foreach (var localizedValue in fieldValue.LocalizedValues)
                 {
                     string valueToSet = "";
-                    if(!string.IsNullOrEmpty(localizedValue.Value))
+                    if (!string.IsNullOrEmpty(localizedValue.Value))
                     {
                         valueToSet = HttpUtility.HtmlEncode(localizedValue.Value);
                     }
-                    else if(localizedValue.Values != null && localizedValue.Values.Count > 0)
+                    else if (localizedValue.Values != null && localizedValue.Values.Count > 0)
                     {
                         //for classification lists, replace IDs from list with namepaths
-                        if(fieldValue.DataType.Equals("ClassificationList", StringComparison.InvariantCultureIgnoreCase))
+                        if (fieldValue.DataType.Equals("ClassificationList", StringComparison.InvariantCultureIgnoreCase))
                         {
                             valueToSet = HttpUtility.HtmlEncode(string.Join(";", GetClassifications(localizedValue.Values)));
                         }
-                        else if(fieldValue.DataType.Equals("optionlist", StringComparison.InvariantCultureIgnoreCase))
+                        else if (fieldValue.DataType.Equals("optionlist", StringComparison.InvariantCultureIgnoreCase))
                         {
                             valueToSet = HttpUtility.HtmlEncode(string.Join(";", GetOptionNames(localizedValue.Values, fieldValue.FieldName)));
                         }
@@ -1699,7 +1752,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                         {
                             valueToSet = HttpUtility.HtmlEncode(string.Join(";", localizedValue.Values));
                         }
-                        
+
                     }
                     if (!string.IsNullOrEmpty(valueToSet))
                     {
@@ -1738,6 +1791,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             }
             return fieldDefNames;
         }
+
 
         /// <summary>
         /// gets field definition ids for export as replacement for field definition names
@@ -1834,7 +1888,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 if (languages.Any(x => x.Id.Equals(languageId)))
                 {
                     return languages.Where(x => x.Id.Equals(languageId)).FirstOrDefault().Name;
-                }                
+                }
             }
             return "";
         }
@@ -1954,8 +2008,11 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                     UnlinkTarget = Elements.GetStringValue(item.Element("unlinkTarget")),
                     WatermarkType = Elements.GetStringValue(item.Element("watermarkType")),
                     RenditionPresets = Elements.GetStringListValue(item.Element("renditionPresets")),
+                    Presets = GetPublicURIPresets(item.Element("publicURLPresets")),
                     Status = Elements.GetStringValue(item.Element("status")),
-                    ContentType = Elements.GetStringValue(item.Element("contentType"))
+                    ContentType = Elements.GetStringValue(item.Element("contentType")),
+                    TargetType = Elements.GetStringValue(item.Element("targetType")),
+                    SubscribersList = Elements.GetHtmlDecodedStringValue(item.Element("subscribersList"))
                 };
 
                 actions.AddOrUpdate.Add(newAction);
@@ -1999,7 +2056,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             writer.WriteLine("    <target>{0}</target>", HttpUtility.HtmlEncode(item.Target));
             writer.WriteLine("    <enabled>{0}</enabled>", item.Enabled ? "true" : "false");
             //we shouldn't need to export expression, it's based on conditions and will be genereted on the other end
-           // writer.WriteLine("    <expression>{0}</expression>", HttpUtility.HtmlEncode(item.Expression));
+            // writer.WriteLine("    <expression>{0}</expression>", HttpUtility.HtmlEncode(item.Expression));
             writer.WriteLine("    <includeDraftRecords>{0}</includeDraftRecords>", item.IncludeDraftRecords ? "true" : "false");
             writer.WriteLine("    <trigger>{0}</trigger>", HttpUtility.HtmlEncode(item.Trigger));
             writer.WriteLine("    <version>{0}</version>", item.Version);
@@ -2010,7 +2067,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 writer.WriteLine("      <ruleCondition>");
                 writer.WriteLine("          <conditionType>{0}</conditionType>", condition.ConditionType);
                 writer.WriteLine("          <index>{0}</index>", condition.Index);
-                writer.WriteLine("          <fieldDefinitionId>{0}</fieldDefinitionId>", GetFieldDefinitions(new List<string>() { condition.FieldDefinitionId }).FirstOrDefault() );
+                writer.WriteLine("          <fieldDefinitionId>{0}</fieldDefinitionId>", GetFieldDefinitions(new List<string>() { condition.FieldDefinitionId }).FirstOrDefault());
                 writer.WriteLine("          <classificationId>{0}</classificationId>", GetClassifications(new List<string> { condition.ClassificationId }).FirstOrDefault());
                 writer.WriteLine("          <directLinkOnly>{0}</directLinkOnly>", condition.DirectLinkOnly ? "true" : "false");
                 writer.WriteLine("          <userId>{0}</userId>", condition.UserId);
@@ -2038,18 +2095,29 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                     foreach (var preset in action.RenditionPresets)
                     {
                         writer.WriteLine("              <preset>{0}</preset>", preset);
-                    }                    
+                    }
                 }
                 writer.WriteLine("          </renditionPresets>");
+                writer.WriteLine("          <publicURLPresets>");
+                if (action.Presets != null)
+                {
+                    foreach (var preset in action.Presets)
+                    {
+                        writer.WriteLine("      <preset presetName=\"{0}\" presetType=\"{1}\" />",
+                    System.Web.HttpUtility.HtmlEncode(preset.PresetName),
+                    System.Web.HttpUtility.HtmlEncode(preset.PresetType));
+                    }
+                }
+                writer.WriteLine("          </publicURLPresets>");
                 writer.WriteLine("          <classificationId>{0}</classificationId>", GetClassifications(new List<string> { action.ClassificationId }).FirstOrDefault());
 
                 writer.WriteLine("          <classificationIds>");
                 if (action.ClassificationIds != null)
-                {                    
+                {
                     foreach (var id in GetClassifications(action.ClassificationIds))
                     {
                         writer.WriteLine("              <id>{0}</id>", id);
-                    }                    
+                    }
                 }
                 writer.WriteLine("          </classificationIds>");
                 writer.WriteLine("          <unlinkTarget>{0}</unlinkTarget>", action.UnlinkTarget);
@@ -2061,6 +2129,8 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 writer.WriteLine("          <watermarkType>{0}</watermarkType>", action.WatermarkType);
                 writer.WriteLine("          <status>{0}</status>", action.Status);
                 writer.WriteLine("          <contentType>{0}</contentType>", action.ContentType);
+                writer.WriteLine("          <targetType>{0}</targetType>", action.TargetType);
+                writer.WriteLine("          <subscribersList>{0}</subscribersList>", HttpUtility.HtmlEncode(action.SubscribersList));
                 writer.WriteLine("      </ruleAction>");
             }
             writer.WriteLine("    </ruleActions>");
@@ -2072,7 +2142,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
 
             writer.WriteLine("  </rule>");
         }
-        
+
 
         #endregion
 
@@ -2135,8 +2205,8 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             catalogActions.Remove = new List<FileTypeDTO.FileTypeAction>();
             foreach (XElement actionElem in element.Descendants("catalogAction"))
             {
-                catalogActions.AddOrUpdate.Add(new FileTypeDTO.FileTypeAction() { IsCritical = Attributes.ConvertStringToBoolean(actionElem.Attribute("IsCritical")), Name = Elements.GetStringValue(actionElem) });               
-            }            
+                catalogActions.AddOrUpdate.Add(new FileTypeDTO.FileTypeAction() { IsCritical = Attributes.ConvertStringToBoolean(actionElem.Attribute("IsCritical")), Name = Elements.GetStringValue(actionElem) });
+            }
             return catalogActions;
         }
 
@@ -2174,7 +2244,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
         /// <param name="writer">The writer.</param>
         private void WriteFileType(FileTypeDTO currentFileType, TextWriter writer)
         {
-            writer.WriteLine("  <fileType Name=\"{0}\" Action=\"{1}\">", HttpUtility.HtmlEncode(currentFileType.Name), currentFileType.Action);            
+            writer.WriteLine("  <fileType Name=\"{0}\" Action=\"{1}\">", HttpUtility.HtmlEncode(currentFileType.Name), currentFileType.Action);
             writer.WriteLine("    <kind>{0}</kind>", HttpUtility.HtmlEncode(currentFileType.Kind));
             writer.WriteLine("    <extension>{0}</extension>", HttpUtility.HtmlEncode(currentFileType.Extension));
             writer.WriteLine("    <mimeType>{0}</mimeType>", HttpUtility.HtmlEncode(currentFileType.MimeType));
@@ -2234,6 +2304,205 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 writer.WriteLine("    <tag></tag>");
 
             writer.WriteLine("  </fileType>");
+        }
+
+        #endregion
+
+        #region Content Types
+
+        /// <summary>
+        /// Reads the xml document and creates a list of content types.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        internal List<ContentTypeImportDTO> GetContentTypes(XDocument document)
+        {
+            var contentTypes = from ct in document.Descendants("contentType")
+                               select new ContentTypeImportDTO
+                               {
+                                   Name = Attributes.GetHtmlDecodedStringValue(ct.Attribute("Name")),
+                                   Action = Attributes.GetStringValue(ct.Attribute("Action")),
+                                   DefaultFileExtensions = GetDefaultFileExtensions(ct.Element("defaultFileExtensions")),
+                                   FileMode = Elements.GetHtmlDecodedStringValue(ct.Element("fileMode")),
+                                   Labels = GetLabels(ct.Element("labels")),
+                                   RegisteredFields = GetFieldsToRegister(ct.Element("registeredFields")),
+                                   InheritableFields = GetFieldsToRegister(ct.Element("inheritableFields")),
+                                   InheritanceConfiguration = Elements.GetHtmlDecodedStringValue(ct.Element("inheritanceConfiguration")),
+                                   InheritanceFieldId = GetFieldToRegister(ct.Element("inheritanceFieldId")),
+                                   ParentId = GetContentTypeId(ct.Element("parentId")),
+                                   Purpose = Elements.GetHtmlDecodedStringValue(ct.Element("purpose")),
+                                   FileConfiguration = GetFileConfiguration(ct.Element("fileConfiguration")),
+                                   TitleConfiguration = GetTitleConfiguration(ct.Element("titleConfiguration"))
+                               };
+
+            if (contentTypes.Any(ct => String.IsNullOrEmpty(ct.Name)))
+            {
+                throw new ApplicationException("A content type Name attribute contains an empty value");
+            }
+
+            return contentTypes.ToList();
+        }
+
+        /// <summary>
+        /// Exports a content type to the file.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="writer"></param>
+        private void WriteContentType(ContentTypeDTO item, TextWriter writer)
+        {
+            Console.WriteLine("Processing content type {0}", item.Name);
+
+            writer.WriteLine("  <contentType Name=\"{0}\" Action=\"{1}\">", HttpUtility.HtmlEncode(item.Name), item.Action);
+            writer.WriteLine("    <defaultFileExtensions>{0}</defaultFileExtensions>", HttpUtility.HtmlEncode(string.Join(",", item.DefaultFileExtensions)));
+            writer.WriteLine("    <fileMode>{0}</fileMode>", item.FileMode);
+            writer.WriteLine("    <labels>");
+
+            foreach (LabelDTO label in item.Labels)
+            {
+                writer.WriteLine("      <label language=\"{0}\">{1}</label>", GetLanguageName(label.Language), HttpUtility.HtmlEncode(label.Text));
+            }
+
+            writer.WriteLine("    </labels>");
+            writer.WriteLine("    <registeredFields>");
+            foreach (string field in GetFieldDefinitions(item.RegisteredFields.Select(x => x.FieldId).ToList<string>()))
+            {
+                writer.WriteLine("      <registeredField>{0}</registeredField>", HttpUtility.HtmlEncode(field));
+            }
+            writer.WriteLine("    </registeredFields>");
+            writer.WriteLine("    <inheritableFields>");
+            foreach (string field in GetFieldDefinitions(item.InheritableFields.Select(x => x.FieldId).ToList<string>()))
+            {
+                writer.WriteLine("      <inheritableField>{0}</inheritableField>", HttpUtility.HtmlEncode(field));
+            }
+            writer.WriteLine("    </inheritableFields>");
+
+            writer.WriteLine("    <inheritanceConfiguration>{0}</inheritanceConfiguration>", item.InheritanceConfiguration);
+            writer.WriteLine("    <inheritanceFieldId>{0}</inheritanceFieldId>", GetFieldDefinitions(new List<string>() { item.InheritanceFieldId }).FirstOrDefault());
+            writer.WriteLine("    <parentId>{0}</parentId>", GetContentType(item.ParentId));
+            writer.WriteLine("    <purpose>{0}</purpose>", HttpUtility.HtmlEncode(item.Purpose));
+            writer.WriteLine("    <fileConfiguration>");
+            if (item.FileConfiguration != null)
+            {
+                writer.WriteLine("      <crawlLevelFieldId>{0}</crawlLevelFieldId>", string.IsNullOrEmpty(item.FileConfiguration.CrawlLevelFieldId) ? "" : GetFieldDefinitions(new List<string>() { item.FileConfiguration.CrawlLevelFieldId }).FirstOrDefault());
+                writer.WriteLine("      <crawlLevelOption>{0}</crawlLevelOption>", HttpUtility.HtmlEncode(item.FileConfiguration.CrawlLevelOption));
+                writer.WriteLine("      <crawlLevelValue>{0}</crawlLevelValue>", HttpUtility.HtmlEncode(item.FileConfiguration.CrawlLevelValue));
+                writer.WriteLine("      <maximumNumberOfPages>{0}</maximumNumberOfPages>", item.FileConfiguration.MaximumNumberOfPages);
+                writer.WriteLine("      <urlFieldId>{0}</urlFieldId>", GetFieldDefinitions(new List<string>() { item.FileConfiguration.UrlFieldId }).FirstOrDefault());
+            }
+            writer.WriteLine("    </fileConfiguration>");
+            writer.WriteLine("    <titleConfiguration>");
+            if (item.TitleConfiguration != null)
+            {
+
+                writer.WriteLine("    <option>{0}</option>", item.TitleConfiguration.Option);
+                writer.WriteLine("    <fieldId>{0}</fieldId>", GetFieldDefinitions(new List<string>() { item.TitleConfiguration.FieldId }).FirstOrDefault());
+                writer.WriteLine("    <showExtension>{0}</showExtension>", item.TitleConfiguration.ShowExtension);
+            }
+            writer.WriteLine("    </titleConfiguration>");
+
+            writer.WriteLine("  </contentType>");
+        }
+
+        /// <summary>
+        /// gets content type name for export as replacement for content type id
+        /// </summary>
+        /// <returns>Content type name</returns>
+        private string GetContentType(string contentTypeId)
+        {
+            if (fieldDefinitions == null)
+            {
+                throw new Exception("GetContentType: Content Types are not cached");
+            }
+
+            if (!string.IsNullOrEmpty(contentTypeId))
+            {
+                if (contentTypes.Any(x => x.Id.Equals(contentTypeId)))
+                {
+                    return contentTypes.Where(x => x.Id.Equals(contentTypeId)).FirstOrDefault().Name;
+                }
+            }
+
+            return "";
+        }
+
+
+        private string GetContentTypeId(XElement element)
+        {
+
+            if (contentTypes == null)
+            {
+                throw new Exception("GetContentTypeId: Content Types are not cached");
+            }
+            if (element == null) return null;
+            var contentTypeName = Elements.GetHtmlDecodedStringValue(element);
+
+
+            if (!string.IsNullOrEmpty(contentTypeName))
+            {
+                if (contentTypes.Any(x => x.Name.Equals(contentTypeName)))
+                {
+                    return contentTypes.Where(x => x.Name.Equals(contentTypeName)).FirstOrDefault().Id;
+                }
+                else
+                {
+                    logger.LogInfo(string.Format("GetContentTypeId: WARNING - couldn't find content type ID at destination environment for content type name: {0}", contentTypeName));
+                }
+            }
+            return "";
+
+        }
+
+        private FileConfigurationDTO GetFileConfiguration(XElement parentElement)
+        {
+            if (parentElement.HasElements)
+            {
+                var fileConfig = new FileConfigurationDTO();
+                fileConfig.CrawlLevelOption = Elements.GetHtmlDecodedStringValue(parentElement.Element("crawlLevelOption"));
+
+                if (!string.Equals(fileConfig.CrawlLevelOption, "Fixed") && !string.IsNullOrEmpty(Elements.GetHtmlDecodedStringValue(parentElement.Element("crawlLevelFieldId"))))
+                {
+                    fileConfig.CrawlLevelFieldId = GetFieldToRegister(parentElement.Element("crawlLevelFieldId"));
+                }
+                if (!string.Equals(fileConfig.CrawlLevelOption, "Field"))
+                {
+                    fileConfig.CrawlLevelValue = Elements.ConvertStringToInt(parentElement.Element("crawlLevelValue"));
+                }
+                if (!string.IsNullOrEmpty(Elements.GetHtmlDecodedStringValue(parentElement.Element("urlFieldId"))))
+                {
+                    fileConfig.UrlFieldId = GetFieldToRegister(parentElement.Element("urlFieldId"));
+                }
+                fileConfig.MaximumNumberOfPages = Elements.ConvertStringToInt(parentElement.Element("maximumNumberOfPages"));
+                return fileConfig;
+            }
+            else return null;
+
+        }
+
+        private ListItemsToAddRemove GetDefaultFileExtensions(XElement parentElement)
+        {
+            if (parentElement.HasElements)
+            {
+                var exensions = new ListItemsToAddRemove();
+                exensions.AddOrUpdate = Elements.GetHtmlDecodedStringValue(parentElement).Split(',').ToList();
+                return exensions;
+            }
+            else return null;
+
+        }
+
+        private TitleConfigurationDTO GetTitleConfiguration(XElement parentElement)
+        {
+            var titleConfig = new TitleConfigurationDTO();
+
+            titleConfig.Option = Elements.GetHtmlDecodedStringValue(parentElement.Element("option"));
+            if (string.Equals(titleConfig.Option, "Field"))
+            {
+                titleConfig.FieldId = GetFieldToRegister(parentElement.Element("fieldId"));
+            }
+            else titleConfig.ShowExtension = Elements.ConvertStringToBoolean(parentElement.Element("showExtension"));
+
+            return titleConfig;
         }
 
         #endregion

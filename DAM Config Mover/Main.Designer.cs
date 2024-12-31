@@ -87,6 +87,8 @@
             this.cbImportFieldDefinitions = new System.Windows.Forms.CheckBox();
             this.btnImport = new System.Windows.Forms.Button();
             this.cbImportFieldGroups = new System.Windows.Forms.CheckBox();
+            this.cbExportContentTypes = new System.Windows.Forms.CheckBox();
+            this.cbImportContentTypes = new System.Windows.Forms.CheckBox();
             this.gbExportDetails.SuspendLayout();
             this.gbConnectionDetails.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -163,6 +165,7 @@
             // 
             // gbExportDetails
             // 
+            this.gbExportDetails.Controls.Add(this.cbExportContentTypes);
             this.gbExportDetails.Controls.Add(this.tbSettingDefinitionsFilter);
             this.gbExportDetails.Controls.Add(this.cbExportSettingDefinitions);
             this.gbExportDetails.Controls.Add(this.tbSettingCategoriesFilter);
@@ -453,6 +456,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbImportContentTypes);
             this.groupBox1.Controls.Add(this.cbImportSettingDefinitions);
             this.groupBox1.Controls.Add(this.cbImportSettingCategories);
             this.groupBox1.Controls.Add(this.btnGetConnectionDetailsImport);
@@ -711,6 +715,26 @@
             this.cbImportFieldGroups.Text = "Import Field Groups";
             this.cbImportFieldGroups.UseVisualStyleBackColor = true;
             // 
+            // cbExportContentTypes
+            // 
+            this.cbExportContentTypes.AutoSize = true;
+            this.cbExportContentTypes.Location = new System.Drawing.Point(4, 531);
+            this.cbExportContentTypes.Name = "cbExportContentTypes";
+            this.cbExportContentTypes.Size = new System.Drawing.Size(188, 24);
+            this.cbExportContentTypes.TabIndex = 45;
+            this.cbExportContentTypes.Text = "Export Content Types";
+            this.cbExportContentTypes.UseVisualStyleBackColor = true;
+            // 
+            // cbImportContentTypes
+            // 
+            this.cbImportContentTypes.AutoSize = true;
+            this.cbImportContentTypes.Location = new System.Drawing.Point(11, 536);
+            this.cbImportContentTypes.Name = "cbImportContentTypes";
+            this.cbImportContentTypes.Size = new System.Drawing.Size(188, 24);
+            this.cbImportContentTypes.TabIndex = 39;
+            this.cbImportContentTypes.Text = "Import Content Types";
+            this.cbImportContentTypes.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -802,6 +826,8 @@
         private System.Windows.Forms.CheckBox cbExportSettingCategories;
         private System.Windows.Forms.CheckBox cbImportSettingDefinitions;
         private System.Windows.Forms.CheckBox cbImportSettingCategories;
+        private System.Windows.Forms.CheckBox cbExportContentTypes;
+        private System.Windows.Forms.CheckBox cbImportContentTypes;
     }
 }
 
