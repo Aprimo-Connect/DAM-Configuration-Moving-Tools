@@ -10,6 +10,7 @@ The scope of objects these tools can help you with is this:
 - Settings,
 - Rules,
 - File Types,
+- Content Types
 - User Group creation with Domain Rights assigned,
 - Classification Permissions,
 - Functional DAM permissions
