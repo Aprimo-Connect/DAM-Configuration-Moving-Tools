@@ -37,14 +37,12 @@
             this.txtClassificationFilter = new System.Windows.Forms.TextBox();
             this.txtPathToXlsx = new System.Windows.Forms.TextBox();
             this.txtClientId = new System.Windows.Forms.TextBox();
-            this.txtUserToken = new System.Windows.Forms.TextBox();
-            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.txtClientSecret = new System.Windows.Forms.TextBox();
             this.txtSubDomain = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.txtLog = new System.Windows.Forms.TextBox();
@@ -62,14 +60,12 @@
             this.groupBox2.Controls.Add(this.txtClassificationFilter);
             this.groupBox2.Controls.Add(this.txtPathToXlsx);
             this.groupBox2.Controls.Add(this.txtClientId);
-            this.groupBox2.Controls.Add(this.txtUserToken);
-            this.groupBox2.Controls.Add(this.txtUserName);
+            this.groupBox2.Controls.Add(this.txtClientSecret);
             this.groupBox2.Controls.Add(this.txtSubDomain);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Location = new System.Drawing.Point(18, 18);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -149,27 +145,19 @@
             // 
             // txtClientId
             // 
-            this.txtClientId.Location = new System.Drawing.Point(159, 148);
+            this.txtClientId.Location = new System.Drawing.Point(159, 72);
             this.txtClientId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtClientId.Name = "txtClientId";
             this.txtClientId.Size = new System.Drawing.Size(970, 26);
             this.txtClientId.TabIndex = 9;
             // 
-            // txtUserToken
+            // txtClientSecret
             // 
-            this.txtUserToken.Location = new System.Drawing.Point(159, 108);
-            this.txtUserToken.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtUserToken.Name = "txtUserToken";
-            this.txtUserToken.Size = new System.Drawing.Size(970, 26);
-            this.txtUserToken.TabIndex = 8;
-            // 
-            // txtUserName
-            // 
-            this.txtUserName.Location = new System.Drawing.Point(159, 69);
-            this.txtUserName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(970, 26);
-            this.txtUserName.TabIndex = 7;
+            this.txtClientSecret.Location = new System.Drawing.Point(159, 108);
+            this.txtClientSecret.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtClientSecret.Name = "txtClientSecret";
+            this.txtClientSecret.Size = new System.Drawing.Size(970, 26);
+            this.txtClientSecret.TabIndex = 8;
             // 
             // txtSubDomain
             // 
@@ -202,7 +190,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(80, 152);
+            this.label8.Location = new System.Drawing.Point(80, 76);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(70, 20);
@@ -215,19 +203,9 @@
             this.label9.Location = new System.Drawing.Point(56, 112);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(91, 20);
+            this.label9.Size = new System.Drawing.Size(150, 30);
             this.label9.TabIndex = 2;
-            this.label9.Text = "User Token";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(68, 74);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(83, 20);
-            this.label10.TabIndex = 1;
-            this.label10.Text = "Username";
+            this.label9.Text = "Client Secret";
             // 
             // label11
             // 
@@ -298,14 +276,12 @@
         private System.Windows.Forms.TextBox txtClassificationFilter;
         private System.Windows.Forms.TextBox txtPathToXlsx;
         private System.Windows.Forms.TextBox txtClientId;
-        private System.Windows.Forms.TextBox txtUserToken;
-        private System.Windows.Forms.TextBox txtUserName;
+        private System.Windows.Forms.TextBox txtClientSecret;
         private System.Windows.Forms.TextBox txtSubDomain;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TextBox txtLog;

@@ -30,7 +30,7 @@ namespace Aprimo.DAM.ConfigurationMover
         private List<WatermarkDTO> allDestinationWatermarks;
         private List<ContentTypeDTO> allDestinationContentTypes;
         private string ClientId;
-        private string UserToken;
+        private string ClientSecret;
         private string UserName;
         private string Password;
         private string AdamUrl;
@@ -69,13 +69,11 @@ namespace Aprimo.DAM.ConfigurationMover
             try
             {
                 ClientId = tbClientIDSource.Text;
-                UserToken = tbUserTokenSource.Text;
-                UserName = tbUsernameSource.Text;
+                ClientSecret = tbClientSecretSource.Text;
                 Registration = tbRegistrationSource.Text;
                 DirPath = txtExportDirPath.Text;
 
-                if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(UserToken) || string.IsNullOrEmpty(UserName)
-               || string.IsNullOrEmpty(Registration) || string.IsNullOrEmpty(DirPath))
+                if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(ClientSecret) || string.IsNullOrEmpty(Registration) || string.IsNullOrEmpty(DirPath))
                 {
                     logger.LogInfo("You have to provide environment information before taking any further action");
                     btnExport.Enabled = true;
@@ -84,9 +82,9 @@ namespace Aprimo.DAM.ConfigurationMover
                     return;
                 }
 
-                string aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", Registration);
+                string aprimoMoUrl = string.Format(@"https://{0}.aprimo.com", Registration);
                 string aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", Registration);
-                AccessHelper accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);
+                AccessHelper accessHelper = new AccessHelper(ClientId, ClientSecret, aprimoMoUrl);
 
 
                 logger.LogInfo("Starting export...");
@@ -203,13 +201,11 @@ namespace Aprimo.DAM.ConfigurationMover
             try
             {
                 ClientId = tbClientIDDestination.Text;
-                UserToken = tbUserTokenDestination.Text;
-                UserName = tbUsernameDestination.Text;
+                ClientSecret = tbClientSecretDestination.Text;
                 Registration = tbRegistrationDestination.Text;
                 DirPath = tbImportDirPath.Text;
 
-                if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(UserToken) || string.IsNullOrEmpty(UserName)
-                || string.IsNullOrEmpty(Registration) || string.IsNullOrEmpty(DirPath))
+                if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(ClientSecret) || string.IsNullOrEmpty(Registration) || string.IsNullOrEmpty(DirPath))
                 {
                     logger.LogInfo("You have to provide environment information before taking any further action");
                     btnExport.Enabled = true;
@@ -218,10 +214,10 @@ namespace Aprimo.DAM.ConfigurationMover
                     return;
                 }
 
-                var aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", Registration);
+                var aprimoMoUrl = string.Format(@"https://{0}.aprimo.com", Registration);
                 var aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", Registration);
 
-                var accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);
+                var accessHelper = new AccessHelper(ClientId, ClientSecret, aprimoMoUrl);
 
                 logger.LogInfo("Starting import...");
 
@@ -472,12 +468,11 @@ namespace Aprimo.DAM.ConfigurationMover
             try
             {
                 ClientId = tbClientIDDestination.Text;
-                UserToken = tbUserTokenDestination.Text;
-                UserName = tbUsernameDestination.Text;
+                ClientSecret = tbClientSecretDestination.Text;
                 Registration = tbRegistrationDestination.Text;
                 DirPath = tbImportDirPath.Text;
 
-                if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(UserToken) || string.IsNullOrEmpty(UserName)
+                if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(ClientSecret) || string.IsNullOrEmpty(UserName)
                     || string.IsNullOrEmpty(Registration) || string.IsNullOrEmpty(DirPath))
                 {
                     logger.LogInfo("You have to provide environment information before taking any further action");
@@ -496,7 +491,7 @@ namespace Aprimo.DAM.ConfigurationMover
                     //do the cleanup of classifications, field defintions, field groups
                     var aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", Registration);
                     var aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", Registration);
-                    var accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);
+                    var accessHelper = new AccessHelper(ClientId, ClientSecret, aprimoMoUrl);
 
                     CleanupHelper cleanupHelper = new CleanupHelper(logger);
                     logger.LogInfo("Loading all field groups...");
@@ -540,12 +535,11 @@ namespace Aprimo.DAM.ConfigurationMover
         private void BtnSelectSettings_Click(object sender, EventArgs e)
         {
             ClientId = tbClientIDSource.Text;
-            UserToken = tbUserTokenSource.Text;
-            UserName = tbUsernameSource.Text;
+            ClientSecret = tbClientSecretSource.Text;
             Registration = tbRegistrationSource.Text;
             DirPath = txtExportDirPath.Text;
 
-            if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(UserToken) || string.IsNullOrEmpty(UserName)
+            if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(ClientSecret) || string.IsNullOrEmpty(UserName)
                || string.IsNullOrEmpty(Registration) || string.IsNullOrEmpty(DirPath))
             {
                 logger.LogInfo("You have to provide environment information before taking any further action");
@@ -555,7 +549,7 @@ namespace Aprimo.DAM.ConfigurationMover
 
             string aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", Registration);
             string aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", Registration);
-            AccessHelper accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);
+            AccessHelper accessHelper = new AccessHelper(ClientId, ClientSecret, aprimoMoUrl);
 
             SettingsSelector settingsSelector = new SettingsSelector(accessHelper, exportHelper, aprimoDamUrl);
             DialogResult dialogresult = settingsSelector.ShowDialog();
@@ -571,14 +565,12 @@ namespace Aprimo.DAM.ConfigurationMover
         private void BtnSaveConnectionDetailsImport_Click(object sender, EventArgs e)
         {
             ClientId = tbClientIDDestination.Text;
-            UserToken = tbUserTokenDestination.Text;
-            UserName = tbUsernameDestination.Text;
+            ClientSecret = tbClientSecretDestination.Text;
             Registration = tbRegistrationDestination.Text;
             ConnectionDTO connectionToSave = new ConnectionDTO()
             {
-                username = UserName,
                 clientId = ClientId,
-                token = UserToken,
+                clientSecret = ClientSecret,
                 registration = Registration,
                 name = Registration
             };
@@ -589,14 +581,12 @@ namespace Aprimo.DAM.ConfigurationMover
         private void BtnSaveConnectionDetailsExport_Click(object sender, EventArgs e)
         {
             ClientId = tbClientIDSource.Text;
-            UserToken = tbUserTokenSource.Text;
-            UserName = tbUsernameSource.Text;
+            ClientSecret = tbClientSecretSource.Text;
             Registration = tbRegistrationSource.Text;
             ConnectionDTO connectionToSave = new ConnectionDTO()
             {
-                username = UserName,
                 clientId = ClientId,
-                token = UserToken,
+                clientSecret = ClientSecret,
                 registration = Registration,
                 name = Registration
             };
@@ -616,8 +606,7 @@ namespace Aprimo.DAM.ConfigurationMover
                 ConnectionDTO details = connectionDetails.SavedConnections.Where(c => c.name.Equals(selectedConnectionName)).FirstOrDefault();
                 tbClientIDSource.Text = details.clientId;
                 tbRegistrationSource.Text = details.registration;
-                tbUsernameSource.Text = details.username;
-                tbUserTokenSource.Text = details.token;
+                tbClientSecretSource.Text = details.clientSecret;
             }
             connectionDetails.Dispose();
         }
@@ -633,10 +622,10 @@ namespace Aprimo.DAM.ConfigurationMover
                 ConnectionDTO details = connectionDetails.SavedConnections.Where(c => c.name.Equals(selectedConnectionName)).FirstOrDefault();
                 tbClientIDDestination.Text = details.clientId;
                 tbRegistrationDestination.Text = details.registration;
-                tbUsernameDestination.Text = details.username;
-                tbUserTokenDestination.Text = details.token;
+                tbClientSecretDestination.Text = details.clientSecret;
             }
             connectionDetails.Dispose();
         }
+
     }
 }

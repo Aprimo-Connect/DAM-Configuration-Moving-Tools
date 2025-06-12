@@ -14,11 +14,10 @@ namespace Aprimo.SecurityImporter
     public partial class Main : Form
     {
         private string ClientId;
-        private string UserToken;
-        private string UserName;
+        private string ClientSecret;
         private string Registration;
         private string PathToXlsx;
-
+        private string authURL;
         private string aprimoMoUrl;
         private string aprimoDamUrl;
 
@@ -37,11 +36,10 @@ namespace Aprimo.SecurityImporter
             try
             {
                 ClientId = tbClientID.Text;
-                UserToken = tbUserToken.Text;
-                UserName = tbUsername.Text;
+                ClientSecret = tbClientSecret.Text;
                 Registration = tbRegistration.Text;
                 PathToXlsx = tbPathToXlsx.Text;
-
+                authURL = string.Format(@"https://{0}.aprimo.com", Registration);
                 aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", Registration);
                 aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", Registration);
 
@@ -51,7 +49,7 @@ namespace Aprimo.SecurityImporter
                     return;
                 }
 
-                var accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);
+                var accessHelper = new AccessHelper(ClientId, ClientSecret, authURL);
 
                 LogInfo("Starting import...");
                 LogInfo("Loading all usergroups in Aprimo...");
@@ -60,6 +58,7 @@ namespace Aprimo.SecurityImporter
                 List<UserGroups.Group> userGroupsDamOnly = userGroups._embedded.group.Where(x => !string.IsNullOrEmpty(x.adamUserId)).ToList();
                 FileInfo fileInfo = new FileInfo(PathToXlsx);
 
+                ExcelPackage.License.SetNonCommercialPersonal("MPA");
                 using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
                 {
                     if (cbImportUserGroups.Checked)

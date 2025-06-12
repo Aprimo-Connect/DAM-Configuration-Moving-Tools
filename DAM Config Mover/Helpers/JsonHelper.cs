@@ -1,10 +1,13 @@
 ﻿using Models;
 using Newtonsoft.Json;
+using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using RestSharp;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Windows;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Aprimo.DAM.ConfigurationMover.Helpers
 {
@@ -38,16 +41,16 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
             return jsonString;
         }
 
-        public static string GetAccessToken(string clientToken, string tokenEndpoint, string clientId, ref string refreshToken)
+        public static string GetAccessToken(string clientSecret, string tokenEndpoint, string clientId)
         {
             // Get the access and refresh tokens
             string accessToken = "";
             var client = new RestClient(tokenEndpoint);
 
-            var request = new RestRequest("oauth/create-native-token", Method.Post);
-            request.AddHeader("Authorization", string.Format("Basic " + clientToken));
-            request.AddHeader("ContentType", "application/json");
-            request.AddHeader("client-id", clientId);
+            var request = new RestRequest("login/connect/token", Method.Post);
+            request.RequestFormat = RestSharp.DataFormat.Json;
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddParameter("application/x-www-form-urlencoded", $"grant_type=client_credentials&client_credentials=configmover&client_id={clientId}&client_secret={clientSecret}", ParameterType.RequestBody);
 
             RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("OK"))
@@ -55,32 +58,11 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers
                 var tokens = JsonHelper.Deserialize<Tokens>(response.Content);
 
                 accessToken = tokens.accessToken;
-                refreshToken = tokens.refreshToken;
             }
             else throw new Exception(string.Format("Access token was not created, responese status is {0}, response message: {1}", response.StatusCode, response.Content));
             return accessToken;
         }
 
-        public static string RefreshToken(string clientToken, string tokenEndpoint, string clientId, string refreshToken)
-        {
-            // Get the access and refresh tokens
-            string accessToken = "";
-            var client = new RestClient(tokenEndpoint);
-            var request = new RestRequest("api/token", Method.Post);
-            request.AddHeader("Authorization", string.Format("Basic " + clientToken));
-            request.AddHeader("ContentType", "application/json");
-            request.AddHeader("client-id", clientId);
-            request.RequestFormat = DataFormat.Json;
-            request.AddJsonBody(new { refreshToken = refreshToken });
-
-            RestResponse response = client.Execute(request);
-            if (response.StatusCode.ToString().Equals("OK"))
-            {
-                accessToken = response.Content.Replace("\"", "");
-            }
-            else throw new Exception(string.Format("Access token could not be refreshed, responese status is {0}, response message: {1}", response.StatusCode, response.Content));
-            return accessToken;
-        }
 
     }
 }

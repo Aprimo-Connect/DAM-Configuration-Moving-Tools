@@ -35,11 +35,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.tbRegistration = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.tbUsername = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.tbClientID = new System.Windows.Forms.TextBox();
-            this.tbUserToken = new System.Windows.Forms.TextBox();
+            this.tbClientSecret = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tbConnectionName = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
@@ -90,7 +88,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(73, 148);
+            this.label8.Location = new System.Drawing.Point(73, 72);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(70, 20);
@@ -111,27 +109,9 @@
             this.label9.Location = new System.Drawing.Point(52, 111);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(91, 20);
+            this.label9.Size = new System.Drawing.Size(150, 30);
             this.label9.TabIndex = 12;
-            this.label9.Text = "User Token";
-            // 
-            // tbUsername
-            // 
-            this.tbUsername.Location = new System.Drawing.Point(151, 69);
-            this.tbUsername.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbUsername.Name = "tbUsername";
-            this.tbUsername.Size = new System.Drawing.Size(323, 26);
-            this.tbUsername.TabIndex = 15;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(60, 75);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(83, 20);
-            this.label10.TabIndex = 11;
-            this.label10.Text = "Username";
+            this.label9.Text = "Client Secret";
             // 
             // label11
             // 
@@ -145,20 +125,20 @@
             // 
             // tbClientID
             // 
-            this.tbClientID.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.tbClientID.Location = new System.Drawing.Point(151, 148);
+            
+            this.tbClientID.Location = new System.Drawing.Point(151, 72);
             this.tbClientID.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbClientID.Name = "tbClientID";
             this.tbClientID.Size = new System.Drawing.Size(323, 26);
             this.tbClientID.TabIndex = 17;
             // 
-            // tbUserToken
+            // tbClientSecret
             // 
-            this.tbUserToken.Location = new System.Drawing.Point(151, 108);
-            this.tbUserToken.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbUserToken.Name = "tbUserToken";
-            this.tbUserToken.Size = new System.Drawing.Size(323, 26);
-            this.tbUserToken.TabIndex = 16;
+            this.tbClientSecret.Location = new System.Drawing.Point(151, 108);
+            this.tbClientSecret.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbClientSecret.Name = "tbClientSecret";
+            this.tbClientSecret.Size = new System.Drawing.Size(323, 26);
+            this.tbClientSecret.TabIndex = 16;
             // 
             // label1
             // 
@@ -194,11 +174,9 @@
             this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Controls.Add(this.tbConnectionName);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.tbUserToken);
+            this.groupBox1.Controls.Add(this.tbClientSecret);
             this.groupBox1.Controls.Add(this.tbClientID);
             this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.tbUsername);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.tbRegistration);
             this.groupBox1.Controls.Add(this.label8);
@@ -234,11 +212,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox tbRegistration;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tbUsername;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox tbClientID;
-        private System.Windows.Forms.TextBox tbUserToken;
+        private System.Windows.Forms.TextBox tbClientSecret;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbConnectionName;
         private System.Windows.Forms.Button btnSave;

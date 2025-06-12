@@ -105,7 +105,8 @@ namespace Helpers
                 }
             }
 
-            request.AddJsonBody(bodyRequest);
+            request.RequestFormat = DataFormat.Json;
+            request.AddJsonBody(JsonHelper.Serialize(bodyRequest));
             RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
@@ -194,15 +195,18 @@ namespace Helpers
             var client = new RestClient(aprimoMoUrl);
             var accessToken = accessHelper.GetToken();
             var request = new RestRequest("groups", Method.Post);
-            request.AddHeader("X-Access-Token", accessToken);
-            request.AddHeader("Accept", "application/json");
-            request.AddJsonBody(group);
+            request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
+            request.AddHeader("Content-Type", "application/json");
+            request.RequestFormat = DataFormat.Json;
+            request.AddJsonBody(JsonHelper.Serialize(group));
+
 
             RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
-                request.AddOrUpdateParameter("X-Access-Token", accessToken);
+                request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
+                request.AddHeader("Content-Type", "application/json");
                 response = client.Execute(request);
             }
 
@@ -218,15 +222,17 @@ namespace Helpers
             var client = new RestClient(aprimoMoUrl);
             var accessToken = accessHelper.GetToken();
             var request = new RestRequest(string.Format("groups/{0}", group.groupId), Method.Put);
-            request.AddHeader("X-Access-Token", accessToken);
-            request.AddHeader("Accept", "application/json");
-            request.AddJsonBody(group);
+            request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
+            request.AddHeader("Content-Type", "application/json");
+            request.RequestFormat = DataFormat.Json;
+            request.AddJsonBody(JsonHelper.Serialize(group));
 
             RestResponse response = client.Execute(request);
             if (response.StatusCode.ToString().Equals("unauthorized", StringComparison.OrdinalIgnoreCase))
             {
                 accessToken = accessHelper.GetRefreshedToken();
-                request.AddOrUpdateParameter("X-Access-Token", accessToken);
+                request.AddHeader("Authorization", string.Format("Bearer " + accessToken));
+                request.AddHeader("Content-Type", "application/json");
                 response = client.Execute(request);
             }
 

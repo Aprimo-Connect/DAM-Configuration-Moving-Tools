@@ -33,7 +33,7 @@ namespace Aprimo.DAM.ConfigurationMover
                 cbSelectEnvironment.DataSource = dataSourceConnections;
                 cbSelectEnvironment.DisplayMember = "Label";
                 cbSelectEnvironment.ValueMember = "ID";
-            }                                   
+            }
         }
 
         public ConnectionsDetails(ConnectionDTO connectionToSave)
@@ -42,11 +42,10 @@ namespace Aprimo.DAM.ConfigurationMover
                string.Format("ConnectionDetails.xml"));
             InitializeComponent();
             tbClientID.Text = connectionToSave.clientId;
-            tbUsername.Text = connectionToSave.username;
-            tbUserToken.Text = connectionToSave.token;
+            tbClientSecret.Text = connectionToSave.clientSecret;
             tbRegistration.Text = connectionToSave.registration;
             tbConnectionName.Text = connectionToSave.name;
-            btnSelectEnv.Enabled = false;            
+            btnSelectEnv.Enabled = false;
         }
         private void BtnSave_Click(object sender, EventArgs e)
         {
@@ -55,13 +54,12 @@ namespace Aprimo.DAM.ConfigurationMover
             {
                 name = tbConnectionName.Text,
                 clientId = tbClientID.Text,
-                username = tbUsername.Text,
-                token = tbUserToken.Text,
+                clientSecret = tbClientSecret.Text,
                 registration = tbRegistration.Text
             };
-            
+
             if (File.Exists(ConnectionsFile))
-            {                
+            {
                 var document = XDocument.Load(ConnectionsFile);
                 connections = GetConnectionDetails(document);
 
@@ -73,7 +71,7 @@ namespace Aprimo.DAM.ConfigurationMover
                 {
                     connections.Remove(connections.Where(c => c.name.Equals(connectionToSave.name)).FirstOrDefault());
                     connections.Add(connectionToSave);
-                }               
+                }
             }
             else
             {
@@ -93,15 +91,14 @@ namespace Aprimo.DAM.ConfigurationMover
                 {
                     writer.WriteLine("  <connection Name=\"{0}\" >", HttpUtility.HtmlEncode(connection.name));
                     writer.WriteLine("    <registration>{0}</registration>", HttpUtility.HtmlEncode(connection.registration));
-                    writer.WriteLine("    <username>{0}</username>", HttpUtility.HtmlEncode(connection.username));
                     writer.WriteLine("    <clientId>{0}</clientId>", HttpUtility.HtmlEncode(connection.clientId));
-                    writer.WriteLine("    <token>{0}</token>", HttpUtility.HtmlEncode(connection.token));
+                    writer.WriteLine("    <clientSecret>{0}</clientSecret>", HttpUtility.HtmlEncode(connection.clientSecret));
                     writer.WriteLine("  </connection>");
                 }
                 writer.WriteLine("</connections>");
                 writer.Flush();
             }
-               
+
         }
 
         public List<ConnectionDTO> GetConnectionDetails(XDocument document)
@@ -111,24 +108,22 @@ namespace Aprimo.DAM.ConfigurationMover
                               {
                                   name = Attributes.GetHtmlDecodedStringValue(c.Attribute("Name")),
                                   registration = Elements.GetHtmlDecodedStringValue(c.Element("registration")),
-                                  username = Elements.GetHtmlDecodedStringValue(c.Element("username")),
                                   clientId = Elements.GetHtmlDecodedStringValue(c.Element("clientId")),
-                                  token = Elements.GetHtmlDecodedStringValue(c.Element("token"))
+                                  clientSecret = Elements.GetHtmlDecodedStringValue(c.Element("clientSecret"))
                               };
 
             return connections.ToList();
-        }            
-        
+        }
+
         public partial class ConnectionDTO
         {
             public string name { get; set; }
             public string registration { get; set; }
-            public string username { get; set; }
             public string clientId { get; set; }
-            public string token { get; set; }
+            public string clientSecret { get; set; }
 
         }
 
-        
+
     }
 }

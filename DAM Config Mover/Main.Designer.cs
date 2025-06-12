@@ -36,6 +36,7 @@
             this.txtLog = new System.Windows.Forms.TextBox();
             this.btnSaveLog = new System.Windows.Forms.Button();
             this.gbExportDetails = new System.Windows.Forms.GroupBox();
+            this.cbExportContentTypes = new System.Windows.Forms.CheckBox();
             this.tbSettingDefinitionsFilter = new System.Windows.Forms.TextBox();
             this.cbExportSettingDefinitions = new System.Windows.Forms.CheckBox();
             this.tbSettingCategoriesFilter = new System.Windows.Forms.TextBox();
@@ -44,12 +45,10 @@
             this.btnGetConnectionDetailsExport = new System.Windows.Forms.Button();
             this.gbConnectionDetails = new System.Windows.Forms.GroupBox();
             this.tbClientIDSource = new System.Windows.Forms.TextBox();
-            this.tbUserTokenSource = new System.Windows.Forms.TextBox();
-            this.tbUsernameSource = new System.Windows.Forms.TextBox();
+            this.tbClientSecretSource = new System.Windows.Forms.TextBox();
             this.tbRegistrationSource = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.tbRuleFilter = new System.Windows.Forms.TextBox();
             this.cbExportRules = new System.Windows.Forms.CheckBox();
@@ -64,6 +63,7 @@
             this.cbExportClassifications = new System.Windows.Forms.CheckBox();
             this.btnSaveConnectionDetailsImport = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbImportContentTypes = new System.Windows.Forms.CheckBox();
             this.cbImportSettingDefinitions = new System.Windows.Forms.CheckBox();
             this.cbImportSettingCategories = new System.Windows.Forms.CheckBox();
             this.btnGetConnectionDetailsImport = new System.Windows.Forms.Button();
@@ -73,12 +73,10 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tbClientIDDestination = new System.Windows.Forms.TextBox();
-            this.tbUserTokenDestination = new System.Windows.Forms.TextBox();
-            this.tbUsernameDestination = new System.Windows.Forms.TextBox();
+            this.tbClientSecretDestination = new System.Windows.Forms.TextBox();
             this.tbRegistrationDestination = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.cbImportSettings = new System.Windows.Forms.CheckBox();
             this.tbImportDirPath = new System.Windows.Forms.TextBox();
@@ -87,8 +85,6 @@
             this.cbImportFieldDefinitions = new System.Windows.Forms.CheckBox();
             this.btnImport = new System.Windows.Forms.Button();
             this.cbImportFieldGroups = new System.Windows.Forms.CheckBox();
-            this.cbExportContentTypes = new System.Windows.Forms.CheckBox();
-            this.cbImportContentTypes = new System.Windows.Forms.CheckBox();
             this.gbExportDetails.SuspendLayout();
             this.gbConnectionDetails.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -196,6 +192,16 @@
             this.gbExportDetails.Tag = "200";
             this.gbExportDetails.Text = "Export details";
             // 
+            // cbExportContentTypes
+            // 
+            this.cbExportContentTypes.AutoSize = true;
+            this.cbExportContentTypes.Location = new System.Drawing.Point(4, 531);
+            this.cbExportContentTypes.Name = "cbExportContentTypes";
+            this.cbExportContentTypes.Size = new System.Drawing.Size(188, 24);
+            this.cbExportContentTypes.TabIndex = 45;
+            this.cbExportContentTypes.Text = "Export Content Types";
+            this.cbExportContentTypes.UseVisualStyleBackColor = true;
+            // 
             // tbSettingDefinitionsFilter
             // 
             this.tbSettingDefinitionsFilter.Location = new System.Drawing.Point(246, 469);
@@ -255,18 +261,16 @@
             // gbConnectionDetails
             // 
             this.gbConnectionDetails.Controls.Add(this.tbClientIDSource);
-            this.gbConnectionDetails.Controls.Add(this.tbUserTokenSource);
-            this.gbConnectionDetails.Controls.Add(this.tbUsernameSource);
+            this.gbConnectionDetails.Controls.Add(this.tbClientSecretSource);
             this.gbConnectionDetails.Controls.Add(this.tbRegistrationSource);
             this.gbConnectionDetails.Controls.Add(this.label8);
             this.gbConnectionDetails.Controls.Add(this.label9);
-            this.gbConnectionDetails.Controls.Add(this.label10);
             this.gbConnectionDetails.Controls.Add(this.label11);
             this.gbConnectionDetails.Location = new System.Drawing.Point(24, 45);
             this.gbConnectionDetails.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gbConnectionDetails.Name = "gbConnectionDetails";
             this.gbConnectionDetails.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.gbConnectionDetails.Size = new System.Drawing.Size(745, 200);
+            this.gbConnectionDetails.Size = new System.Drawing.Size(745, 159);
             this.gbConnectionDetails.TabIndex = 36;
             this.gbConnectionDetails.TabStop = false;
             this.gbConnectionDetails.Tag = "150";
@@ -274,27 +278,19 @@
             // 
             // tbClientIDSource
             // 
-            this.tbClientIDSource.Location = new System.Drawing.Point(159, 159);
+            this.tbClientIDSource.Location = new System.Drawing.Point(159, 76);
             this.tbClientIDSource.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbClientIDSource.Name = "tbClientIDSource";
             this.tbClientIDSource.Size = new System.Drawing.Size(571, 26);
             this.tbClientIDSource.TabIndex = 9;
             // 
-            // tbUserTokenSource
+            // tbClientSecretSource
             // 
-            this.tbUserTokenSource.Location = new System.Drawing.Point(159, 119);
-            this.tbUserTokenSource.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbUserTokenSource.Name = "tbUserTokenSource";
-            this.tbUserTokenSource.Size = new System.Drawing.Size(571, 26);
-            this.tbUserTokenSource.TabIndex = 8;
-            // 
-            // tbUsernameSource
-            // 
-            this.tbUsernameSource.Location = new System.Drawing.Point(159, 80);
-            this.tbUsernameSource.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbUsernameSource.Name = "tbUsernameSource";
-            this.tbUsernameSource.Size = new System.Drawing.Size(571, 26);
-            this.tbUsernameSource.TabIndex = 7;
+            this.tbClientSecretSource.Location = new System.Drawing.Point(159, 114);
+            this.tbClientSecretSource.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbClientSecretSource.Name = "tbClientSecretSource";
+            this.tbClientSecretSource.Size = new System.Drawing.Size(571, 26);
+            this.tbClientSecretSource.TabIndex = 8;
             // 
             // tbRegistrationSource
             // 
@@ -307,7 +303,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(80, 163);
+            this.label8.Location = new System.Drawing.Point(77, 82);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(70, 20);
@@ -317,27 +313,17 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(56, 123);
+            this.label9.Location = new System.Drawing.Point(52, 114);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(91, 20);
+            this.label9.Size = new System.Drawing.Size(100, 20);
             this.label9.TabIndex = 2;
-            this.label9.Text = "User Token";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(68, 85);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(83, 20);
-            this.label10.TabIndex = 1;
-            this.label10.Text = "Username";
+            this.label9.Text = "Client Secret";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(52, 45);
+            this.label11.Location = new System.Drawing.Point(55, 43);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(95, 20);
@@ -481,6 +467,16 @@
             this.groupBox1.Tag = "200";
             this.groupBox1.Text = "Import details";
             // 
+            // cbImportContentTypes
+            // 
+            this.cbImportContentTypes.AutoSize = true;
+            this.cbImportContentTypes.Location = new System.Drawing.Point(11, 536);
+            this.cbImportContentTypes.Name = "cbImportContentTypes";
+            this.cbImportContentTypes.Size = new System.Drawing.Size(188, 24);
+            this.cbImportContentTypes.TabIndex = 39;
+            this.cbImportContentTypes.Text = "Import Content Types";
+            this.cbImportContentTypes.UseVisualStyleBackColor = true;
+            // 
             // cbImportSettingDefinitions
             // 
             this.cbImportSettingDefinitions.AutoSize = true;
@@ -556,12 +552,10 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tbClientIDDestination);
-            this.groupBox2.Controls.Add(this.tbUserTokenDestination);
-            this.groupBox2.Controls.Add(this.tbUsernameDestination);
+            this.groupBox2.Controls.Add(this.tbClientSecretDestination);
             this.groupBox2.Controls.Add(this.tbRegistrationDestination);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Location = new System.Drawing.Point(24, 38);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -575,27 +569,19 @@
             // 
             // tbClientIDDestination
             // 
-            this.tbClientIDDestination.Location = new System.Drawing.Point(159, 159);
+            this.tbClientIDDestination.Location = new System.Drawing.Point(159, 76);
             this.tbClientIDDestination.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbClientIDDestination.Name = "tbClientIDDestination";
             this.tbClientIDDestination.Size = new System.Drawing.Size(554, 26);
             this.tbClientIDDestination.TabIndex = 9;
             // 
-            // tbUserTokenDestination
+            // tbClientSecretDestination
             // 
-            this.tbUserTokenDestination.Location = new System.Drawing.Point(159, 119);
-            this.tbUserTokenDestination.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbUserTokenDestination.Name = "tbUserTokenDestination";
-            this.tbUserTokenDestination.Size = new System.Drawing.Size(554, 26);
-            this.tbUserTokenDestination.TabIndex = 8;
-            // 
-            // tbUsernameDestination
-            // 
-            this.tbUsernameDestination.Location = new System.Drawing.Point(159, 80);
-            this.tbUsernameDestination.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbUsernameDestination.Name = "tbUsernameDestination";
-            this.tbUsernameDestination.Size = new System.Drawing.Size(554, 26);
-            this.tbUsernameDestination.TabIndex = 7;
+            this.tbClientSecretDestination.Location = new System.Drawing.Point(159, 119);
+            this.tbClientSecretDestination.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tbClientSecretDestination.Name = "tbClientSecretDestination";
+            this.tbClientSecretDestination.Size = new System.Drawing.Size(554, 26);
+            this.tbClientSecretDestination.TabIndex = 8;
             // 
             // tbRegistrationDestination
             // 
@@ -608,7 +594,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(80, 163);
+            this.label2.Location = new System.Drawing.Point(80, 80);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(70, 20);
@@ -621,19 +607,9 @@
             this.label3.Location = new System.Drawing.Point(56, 123);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(91, 20);
+            this.label3.Size = new System.Drawing.Size(150, 30);
             this.label3.TabIndex = 2;
-            this.label3.Text = "User Token";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(68, 85);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 20);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Username";
+            this.label3.Text = "Client Secret";
             // 
             // label5
             // 
@@ -715,26 +691,6 @@
             this.cbImportFieldGroups.Text = "Import Field Groups";
             this.cbImportFieldGroups.UseVisualStyleBackColor = true;
             // 
-            // cbExportContentTypes
-            // 
-            this.cbExportContentTypes.AutoSize = true;
-            this.cbExportContentTypes.Location = new System.Drawing.Point(4, 531);
-            this.cbExportContentTypes.Name = "cbExportContentTypes";
-            this.cbExportContentTypes.Size = new System.Drawing.Size(188, 24);
-            this.cbExportContentTypes.TabIndex = 45;
-            this.cbExportContentTypes.Text = "Export Content Types";
-            this.cbExportContentTypes.UseVisualStyleBackColor = true;
-            // 
-            // cbImportContentTypes
-            // 
-            this.cbImportContentTypes.AutoSize = true;
-            this.cbImportContentTypes.Location = new System.Drawing.Point(11, 536);
-            this.cbImportContentTypes.Name = "cbImportContentTypes";
-            this.cbImportContentTypes.Size = new System.Drawing.Size(188, 24);
-            this.cbImportContentTypes.TabIndex = 39;
-            this.cbImportContentTypes.Text = "Import Content Types";
-            this.cbImportContentTypes.UseVisualStyleBackColor = true;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -791,12 +747,10 @@
         private System.Windows.Forms.CheckBox cbImportFieldGroups;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox tbClientIDDestination;
-        private System.Windows.Forms.TextBox tbUserTokenDestination;
-        private System.Windows.Forms.TextBox tbUsernameDestination;
+        private System.Windows.Forms.TextBox tbClientSecretDestination;
         private System.Windows.Forms.TextBox tbRegistrationDestination;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.CheckBox cbImportClsFieldValues;
@@ -811,12 +765,10 @@
         private System.Windows.Forms.Button btnGetConnectionDetailsImport;
         private System.Windows.Forms.GroupBox gbConnectionDetails;
         private System.Windows.Forms.TextBox tbClientIDSource;
-        private System.Windows.Forms.TextBox tbUserTokenSource;
-        private System.Windows.Forms.TextBox tbUsernameSource;
+        private System.Windows.Forms.TextBox tbClientSecretSource;
         private System.Windows.Forms.TextBox tbRegistrationSource;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button btnGetConnectionDetailsExport;
         private System.Windows.Forms.Button btnSaveConnectionDetailsExport;

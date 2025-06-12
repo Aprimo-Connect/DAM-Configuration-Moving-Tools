@@ -19,12 +19,11 @@ namespace Aprimo.SecurityExporter
         private Dictionary<string, string> FunctionalPermissions = new Dictionary<string, string>();
 
         private string ClientId;
-        private string UserToken;
-        private string UserName;
+        private string ClientSecret;
         private string CustomerUrlBaseName;
         private string PathToXlsx;
         private string ClassificationFilter;
-
+        private string authURL;
         private string aprimoMoUrl;
         private string aprimoDamUrl;
 
@@ -50,12 +49,11 @@ namespace Aprimo.SecurityExporter
             try
             {
                 ClientId = txtClientId.Text;
-                UserToken = txtUserToken.Text;
-                UserName = txtUserName.Text;
+                ClientSecret = txtClientSecret.Text;
                 CustomerUrlBaseName = txtSubDomain.Text;
                 PathToXlsx = txtPathToXlsx.Text;
                 ClassificationFilter = txtClassificationFilter.Text;
-
+                authURL = string.Format(@"https://{0}.aprimo.com", CustomerUrlBaseName);
                 aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", CustomerUrlBaseName);
                 aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", CustomerUrlBaseName);
 
@@ -64,7 +62,7 @@ namespace Aprimo.SecurityExporter
                     LogInfo("Nothing is selected for export.");
                     return;
                 }
-                var accessHelper = new AccessHelper(UserName, UserToken, aprimoMoUrl, ClientId);
+                var accessHelper = new AccessHelper(ClientId, ClientSecret, authURL);
 
                 LogInfo("Starting export...");
                 LogInfo("Loading all usergroups in Aprimo...");
