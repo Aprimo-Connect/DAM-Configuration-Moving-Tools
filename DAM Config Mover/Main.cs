@@ -539,7 +539,7 @@ namespace Aprimo.DAM.ConfigurationMover
             Registration = tbRegistrationSource.Text;
             DirPath = txtExportDirPath.Text;
 
-            if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(ClientSecret) || string.IsNullOrEmpty(UserName)
+            if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(ClientSecret)
                || string.IsNullOrEmpty(Registration) || string.IsNullOrEmpty(DirPath))
             {
                 logger.LogInfo("You have to provide environment information before taking any further action");
@@ -548,7 +548,7 @@ namespace Aprimo.DAM.ConfigurationMover
 
 
             string aprimoDamUrl = string.Format(@"https://{0}.dam.aprimo.com/api/core", Registration);
-            string aprimoMoUrl = string.Format(@"https://{0}.aprimo.com/api", Registration);
+            string aprimoMoUrl = string.Format(@"https://{0}.aprimo.com", Registration);
             AccessHelper accessHelper = new AccessHelper(ClientId, ClientSecret, aprimoMoUrl);
 
             SettingsSelector settingsSelector = new SettingsSelector(accessHelper, exportHelper, aprimoDamUrl);
