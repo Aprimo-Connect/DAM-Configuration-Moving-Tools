@@ -77,6 +77,12 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
         [System.Runtime.Serialization.DataMemberAttribute(Name = "aiEnabled")]
         public bool AIEnabled { get; set; }
 
+        [System.Runtime.Serialization.DataMemberAttribute(Name = "metadataPredictionEnabled")]
+        public bool MetadataPredictionEnabled { get; set; }
+
+        [System.Runtime.Serialization.DataMemberAttribute(Name = "hints")]
+        public string Hints { get; set; }
+
         [System.Runtime.Serialization.DataMemberAttribute(Name = "memberships")]
         public List<string> FieldGroups { get; set; }
 

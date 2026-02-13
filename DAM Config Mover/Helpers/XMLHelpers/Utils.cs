@@ -201,6 +201,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                     ContainsUniqueIdentifiers = Elements.ConvertStringToBoolean(f.Element("containsUniqueIdentifiers")),
                     ReadOnly = Elements.ConvertStringToBoolean(f.Element("readOnly")),
                     IsRequired = Elements.ConvertStringToBoolean(f.Element("isRequired")),
+                    MetadataPredictionEnabled = Elements.ConvertStringToBoolean(f.Element("metadataPredictionEnabled")),
                     FieldGroups = GetFieldGroups(f.Element("fieldGroups")),
                     Options = GetOptions(f.Element("options")),
                     RelationType = Elements.GetStringValue(f.Element("relationType")),
@@ -211,6 +212,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                     ValidationValue = Elements.GetStringValue(f.Element("validation")),
                     ValidationTrigger = Elements.GetStringValue(f.Element("validationTrigger")),
                     ValidationMessage = Elements.GetStringValue(f.Element("validationMessage")),
+                    Hints = Elements.GetHtmlDecodedStringValue(f.Element("hints")),
                     StorageMode = Elements.GetStringValue(f.Element("storageMode")),
                     LanguageMode = Elements.GetStringValue(f.Element("languageMode")),
                     EnabledLanguages = GetEnabledLanguages(f.Element("enabledLanguages")),
@@ -777,6 +779,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
             writer.WriteLine("    <isInheritable>{0}</isInheritable>", currentField.IsInheritable);
             writer.WriteLine("    <readOnly>{0}</readOnly>", currentField.ReadOnly);
             writer.WriteLine("    <isRequired>{0}</isRequired>", currentField.IsRequired);
+            writer.WriteLine("    <metadataPredictionEnabled>{0}</metadataPredictionEnabled>", currentField.MetadataPredictionEnabled);
             writer.WriteLine("    <fieldGroups>");
             foreach (string fieldGroupName in GetFieldGroupNames(currentField.FieldGroups))
             {
@@ -846,6 +849,7 @@ namespace Aprimo.DAM.ConfigurationMover.Helpers.XmlHelpers
                 writer.WriteLine("    <validationMessage />");
 
             writer.WriteLine("    <validationTrigger>{0}</validationTrigger>", currentField.ValidationTrigger);
+            writer.WriteLine("    <hints>{0}</hints>", HttpUtility.HtmlEncode(currentField.Hints));
             writer.WriteLine("    <storageMode>{0}</storageMode>", currentField.StorageMode);
             writer.WriteLine("    <languageMode>{0}</languageMode>", currentField.LanguageMode);
             writer.WriteLine("    <enabledLanguages>");

@@ -167,6 +167,12 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
         [System.Runtime.Serialization.DataMemberAttribute(Name = "inlineStyle")]
         public string InlineStyle { get; set; }
 
+        [System.Runtime.Serialization.DataMemberAttribute(Name = "metadataPredictionEnabled")]
+        public bool MetadataPredictionEnabled { get; set; }
+
+        [System.Runtime.Serialization.DataMemberAttribute(Name = "hints")]
+        public string Hints { get; set; }
+        
         /// <summary>
         /// Action add / delete
         /// </summary>
@@ -203,6 +209,8 @@ namespace Aprimo.DAM.ConfigurationMover.Models.DTOs
             this.ValidationMessage = genericDTO.ValidationMessage;
             this.ValidationTrigger = genericDTO.ValidationTrigger;
             this.ValidationValue = genericDTO.ValidationValue;
+            this.Hints = genericDTO.Hints;
+            this.MetadataPredictionEnabled = genericDTO.MetadataPredictionEnabled;
             this.IsUpdate = isUpdate;
         }
 
