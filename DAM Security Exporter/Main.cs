@@ -69,7 +69,7 @@ namespace Aprimo.SecurityExporter
                 UserGroups userGroups = ExtractionHelper.GetAllUserGroups(accessHelper, aprimoMoUrl);
                 List<UserGroups.Group> userGroupsDamOnly = userGroups._embedded.group.Where(x => !string.IsNullOrEmpty(x.adamUserId)).ToList();
                 FileInfo fileInfo = new FileInfo(PathToXlsx);
-                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                ExcelPackage.License.SetNonCommercialPersonal("SolutionAdmin");
                 using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
                 {
                     if (cbExportClsPermissions.Checked)

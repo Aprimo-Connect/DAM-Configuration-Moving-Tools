@@ -58,7 +58,7 @@ namespace Aprimo.SecurityImporter
                 List<UserGroups.Group> userGroupsDamOnly = userGroups._embedded.group.Where(x => !string.IsNullOrEmpty(x.adamUserId)).ToList();
                 FileInfo fileInfo = new FileInfo(PathToXlsx);
 
-                ExcelPackage.License.SetNonCommercialPersonal("MPA");
+                ExcelPackage.License.SetNonCommercialPersonal("SolutionAdmin");
                 using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
                 {
                     if (cbImportUserGroups.Checked)
